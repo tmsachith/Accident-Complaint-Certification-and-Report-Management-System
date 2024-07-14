@@ -36,7 +36,7 @@ const RightSection = styled.div`
 const Button = styled(Link)`
   --primary-color: #645bff;
   --secondary-color: #fff;
-  --hover-color: #111;
+  --hover-color: linear-gradient(#AF40FF, #5B42F3 ,#00DDEB);
   --arrow-width: 10px;
   --arrow-stroke: 2px;
   box-sizing: border-box;
