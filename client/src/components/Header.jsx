@@ -112,7 +112,7 @@ const Header = () => {
         <Button to="/">
           Home
           <div className="arrow-wrapper">
-            <div className="arrow"></div>
+            
           </div>
         </Button>
         <Button as="button" onClick={handleSignInClick}>
