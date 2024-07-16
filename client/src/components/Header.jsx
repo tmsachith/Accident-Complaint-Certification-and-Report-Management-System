@@ -11,7 +11,8 @@ const HeaderWrapper = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  background: linear-gradient(90deg, #6ab04c, #3b945e);
+
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
@@ -34,9 +35,11 @@ const RightSection = styled.div`
 
 // Styled button
 const Button = styled(Link)`
-  --primary-color: #645bff;
+  --primary-color: background: linear-gradient(90deg, #6ab04c, #3b945e);
+
   --secondary-color: #fff;
-  --hover-color: linear-gradient(#AF40FF, #5B42F3 ,#00DDEB);
+background: linear-gradient(90deg, #6ab04c, #3b945e);
+
   --arrow-width: 10px;
   --arrow-stroke: 2px;
   box-sizing: border-box;
@@ -105,7 +108,7 @@ const Header = () => {
     <HeaderWrapper>
       <Link to="/">
         <Title>
-          <h1>Bio Foods</h1>
+          <h1>BIO FOODS</h1>
         </Title>
       </Link>
       <RightSection>

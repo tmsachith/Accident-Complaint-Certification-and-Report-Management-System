@@ -2,10 +2,11 @@ import express from 'express'; // using express we can work with back end and th
 import mongoose from 'mongoose'; // using mongoose we can work with the database
 import dotenv from 'dotenv'; // using dotenv we can work with the environment variables
 import userRouter from './routes/user.route.js'; // using userRouter we can work with the user routes
-
+import authRouter from './routes/auth.route.js';
 dotenv.config(); // Load environment variables from .env file
 
 const app = express();
+app.use(express.json());
 const PORT = process.env.PORT || 3000; // Use PORT from environment variables or default to 3000
 
 // MongoDB connection string from environment variables
@@ -32,6 +33,5 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 app.use('/api/user', userRouter);
 
-app.get('/test', (req, res) => {
-  res.send('Hello World!');
-});
+app.use('/api/auth', authRouter);
+ 
