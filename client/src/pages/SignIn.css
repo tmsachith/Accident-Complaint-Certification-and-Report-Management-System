@@ -1,9 +1,9 @@
 .content {
   width: 330px;
   padding: 40px 30px;
-  background: #dde1e7;
+  background: #ffffff;
   border-radius: 10px;
-  box-shadow: -3px -3px 7px #ffffff73, 2px 2px 5px rgba(94, 104, 121, 0.288);
+  box-shadow: -3px -3px 7px #8f8c8c73, 2px 2px 5px rgba(94, 104, 121, 0.288);
   margin: 0 auto; /* This centers the element horizontally */
   margin-top: 6%;
   margin-bottom: 10%;
@@ -27,6 +27,7 @@
   .field:nth-child(2) {
     margin-top: 20px;
   }
+  
   
   .field .input {
     height: 100%;
@@ -87,7 +88,7 @@
     font-size: 18px;
     line-height: 50px;
     font-weight: 600;
-    background: #dde1e7;
+    background: #88bda0;
     border-radius: 25px;
     border: none;
     outline: none;
