@@ -3,6 +3,7 @@ import mongoose from 'mongoose'; // using mongoose we can work with the database
 import dotenv from 'dotenv'; // using dotenv we can work with the environment variables
 import userRouter from './routes/user.route.js'; // using userRouter we can work with the user routes
 import authRouter from './routes/auth.route.js';
+
 dotenv.config(); // Load environment variables from .env file
 
 const app = express();
@@ -34,16 +35,18 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use('/api/user', userRouter);
 
 app.use('/api/auth', authRouter);
- 
 
-app.use((err , req, res,next) => {
-  const statusCode = err.statusCode ||  500;
+// Error handling middleware
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
   const message = err.message || 'Something went wrong! / internal server error';
+  if (res.headersSent) {
+    return next(err);
+  }
   return res.status(statusCode).json({ 
     success: false,
     statusCode,
     message,
   });
-
-  }); //middle ware 1:43:47
+});
 

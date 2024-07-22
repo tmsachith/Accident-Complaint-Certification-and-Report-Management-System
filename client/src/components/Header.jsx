@@ -1,45 +1,37 @@
-import React from 'react';
-import { FaSignInAlt } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { FaBell } from 'react-icons/fa';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 // Styled components for the header
-
-// Wrapper for the entire header, includes a blue gradient background
 const HeaderWrapper = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
   background: linear-gradient(90deg, #6ab04c, #3b945e);
-
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-// Title section
 const Title = styled.div`
   h1 {
     margin: 0;
     font-size: 24px;
-    color: #ffffff; // White text color for better contrast against the gradient background
-    font-weight: bold; // Bold text
+    color: #ffffff;
+    font-weight: bold;
   }
 `;
 
-// Container for the right section of the header (Home, Sign In and Contact Us)
 const RightSection = styled.div`
   display: flex;
   align-items: center;
   gap: 15px;
 `;
 
-// Styled button
 const Button = styled(Link)`
   --primary-color: background: linear-gradient(90deg, #6ab04c, #3b945e);
-
   --secondary-color: #fff;
-background: linear-gradient(90deg, #6ab04c, #3b945e);
-
+  background: linear-gradient(90deg, #6ab04c, #3b945e);
   --arrow-width: 10px;
   --arrow-stroke: 2px;
   box-sizing: border-box;
@@ -99,8 +91,23 @@ background: linear-gradient(90deg, #6ab04c, #3b945e);
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [username, setUsername] = useState(null);
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
 
   const handleSignInClick = () => {
+    navigate('/sign-in');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('username');
+    setUsername(null);
     navigate('/sign-in');
   };
 
@@ -112,27 +119,38 @@ const Header = () => {
         </Title>
       </Link>
       <RightSection>
-        <Button to="/">
-          Home
-          <div className="arrow-wrapper">
-            
-          </div>
-        </Button>
-        <Button as="button" onClick={handleSignInClick}>
-          Sign In
-          <div className="arrow-wrapper">
-            <div className="arrow"></div>
-          </div>
-        </Button>
-        <Button to="/contact">
-          Contact Us
-          <div className="arrow-wrapper">
-            <div className="arrow"></div>
-          </div>
-        </Button>
+        {location.pathname === '/dashboard' ? (
+          <>
+            <div style={{ color: 'white' }}>Welcome, {username}!</div>
+            <FaBell style={{ color: 'white', fontSize: '24px' }} />
+            <Button as="button" onClick={handleLogout}>
+              Logout
+              <div className="arrow-wrapper">
+                <div className="arrow"></div>
+              </div>
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button to="/">
+              Home
+              <div className="arrow-wrapper"></div>
+            </Button>
+            <Button as="button" onClick={handleSignInClick}>
+              Sign In
+              <div className="arrow-wrapper">
+                <div className="arrow"></div>
+              </div>
+            </Button>
+            <Button to="/contact">
+              Contact Us
+              <div className="arrow-wrapper"></div>
+            </Button>
+          </>
+        )}
       </RightSection>
     </HeaderWrapper>
   );
-}
+};
 
 export default Header;
