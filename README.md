@@ -1,1 +1,1 @@
-This is web based application for manage accidents, complaints in Bio Foods pvt ltd.
+This is a web-based application designed to manage accidents and complaints at Bio Foods PVT LTD.
