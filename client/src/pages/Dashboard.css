@@ -39,7 +39,7 @@
   
   .dashboard-content {
     width: 100%;
-    max-width: 600px;
+    max-width: auto;
     background-color: white;
     padding: 20px;
     border-radius: 5px;
@@ -83,4 +83,14 @@
     transform: scaleX(0);
     transform-origin: left;
   }
+  .dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.dashboard-main {
+  display: flex;
+  flex-grow: 1;
+}
   

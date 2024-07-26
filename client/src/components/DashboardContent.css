@@ -1,0 +1,72 @@
+.dashboard-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Reduced gap */
+  justify-content: center;
+}
+
+.card5 {
+  width: 220px; /* Keep original width */
+  height: 200px; /* Keep original height */
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  margin: 10px; /* Reduced margin */
+  transition: transform 0.3s ease-in-out;
+}
+
+.card5:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #8f7eff, #44a4ff);
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.card5:hover:before {
+  opacity: 0.5;
+}
+
+.card5:hover {
+  transform: scale(1.05);
+}
+
+.card5-content {
+  width: 100%; /* Keep original width */
+  height: 100%; /* Keep original height */
+  padding: 20px;
+  text-align: center;
+  color: rgb(0, 0, 0);
+  z-index: 1;
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -45%); /* Adjusted to match initial state */
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card5-content span {
+  font-size: 1.5rem; /* Keep original font size */
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.card5-content p {
+  font-size: 0.9rem; /* Keep original font size */
+  margin: 0;
+}
+
+.card5:hover .card5-content {
+  transform: translate(-50%, -50%); /* Adjusted to match hover state */
+}

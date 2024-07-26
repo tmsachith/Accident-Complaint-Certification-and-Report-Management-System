@@ -62,11 +62,12 @@ export const signin = async (req, res, next) => {
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
             expiresIn: '1h'
         });
+        const { password: pass, ...rest } = user._doc;
 
         // Send response with token and user info
         res.cookie('access_token', token, { httpOnly: true })
             .status(200)
-            .json({ message: 'Sign in successful', username: user.username, token });
+            .json( rest );
     } catch (error) {
         next(errorHandler(500, 'Sign in failed. Please try again.'));
     }

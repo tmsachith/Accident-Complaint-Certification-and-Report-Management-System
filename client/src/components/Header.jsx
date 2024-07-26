@@ -98,8 +98,10 @@ const Header = () => {
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
       setUsername(storedUsername);
+    } else if (location.pathname === '/dashboard') {
+      navigate('/sign-in');
     }
-  }, []);
+  }, [location.pathname, navigate]);
 
   const handleSignInClick = () => {
     navigate('/sign-in');
@@ -119,7 +121,7 @@ const Header = () => {
         </Title>
       </Link>
       <RightSection>
-        {location.pathname === '/dashboard' ? (
+        {username ? (
           <>
             <div style={{ color: 'white' }}>Welcome, {username}!</div>
             <FaBell style={{ color: 'white', fontSize: '24px' }} />
