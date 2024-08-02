@@ -12,6 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
@@ -20,6 +22,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.1",
     "node-sass": "^9.0.0",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "react-router-dom": "^6.25.1",
+    "react-slick": "^0.30.2",
+    "slick-carousel": "^1.8.1"
   }
 }

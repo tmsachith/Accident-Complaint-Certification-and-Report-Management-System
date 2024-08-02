@@ -1,14 +1,15 @@
-import express from 'express'; // using express we can work with back end and the APIs
-import mongoose from 'mongoose'; // using mongoose we can work with the database
-import dotenv from 'dotenv'; // using dotenv we can work with the environment variables
-import userRouter from './routes/user.route.js'; // using userRouter we can work with the user routes
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
+import complaintRouter from './routes/complaint.route.js'; // Import complaint router
 
 dotenv.config(); // Load environment variables from .env file
 
 const app = express();
 app.use(express.json());
-const PORT = process.env.PORT || 3000; // Use PORT from environment variables or default to 3000
+const PORT = process.env.PORT || 5000; // Use PORT from environment variables or default to 5000
 
 // MongoDB connection string from environment variables
 const mongoURI = process.env.MONGODB_URI;
@@ -33,8 +34,8 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   });
 
 app.use('/api/user', userRouter);
-
 app.use('/api/auth', authRouter);
+app.use('/api', complaintRouter); // Register complaint router
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -43,10 +44,9 @@ app.use((err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
   }
-  return res.status(statusCode).json({ 
+  return res.status(statusCode).json({
     success: false,
     statusCode,
     message,
   });
 });
-

@@ -1,7 +1,7 @@
 .content {
     width: 499px;
     padding: 40px 30px;
-    background: #aed6b2;
+    background: #a5d6aa;
     border-radius: 10px;
     box-shadow: -3px -3px 7px #8f8c8c73, 2px 2px 5px rgba(94, 104, 121, 0.288);
     margin: 0 auto;
@@ -87,7 +87,7 @@
     font-size: 18px;
     line-height: 50px;
     font-weight: 600;
-    background: #88bda0;
+    background: #72b38f;
     border-radius: 25px;
     border: none;
     outline: none;

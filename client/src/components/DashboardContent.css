@@ -15,6 +15,7 @@
   overflow: hidden;
   margin: 10px; /* Reduced margin */
   transition: transform 0.3s ease-in-out;
+  cursor: pointer; /* Added cursor pointer for better UX */
 }
 
 .card5:before {
@@ -35,6 +36,22 @@
 
 .card5:hover {
   transform: scale(1.05);
+}
+
+.notification-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
 }
 
 .card5-content {
@@ -65,6 +82,12 @@
 .card5-content p {
   font-size: 0.9rem; /* Keep original font size */
   margin: 0;
+}
+
+.card5-content .fa-icon {
+  font-size: 3rem; /* Adjust icon size */
+  margin-bottom: 10px; /* Space between icon and title */
+  color: #444; /* Adjust icon color */
 }
 
 .card5:hover .card5-content {

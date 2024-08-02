@@ -1,0 +1,11 @@
+.accidents {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .accidents-main {
+    display: flex;
+    flex-grow: 1;
+  }
+  

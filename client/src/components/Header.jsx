@@ -89,10 +89,30 @@ const Button = styled(Link)`
   }
 `;
 
+const NotificationIcon = styled(Link)`
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: white;
+
+  .notification-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 0 6px;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+`;
+
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [username, setUsername] = useState(null);
+  const [notificationCount, setNotificationCount] = useState(3); // Example notification count
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -124,7 +144,12 @@ const Header = () => {
         {username ? (
           <>
             <div style={{ color: 'white' }}>Welcome, {username}!</div>
-            <FaBell style={{ color: 'white', fontSize: '24px' }} />
+            <NotificationIcon to="/notifications">
+              <FaBell style={{ fontSize: '24px' }} />
+              {notificationCount > 0 && (
+                <span className="notification-count">{notificationCount}</span>
+              )}
+            </NotificationIcon>
             <Button as="button" onClick={handleLogout}>
               Logout
               <div className="arrow-wrapper">

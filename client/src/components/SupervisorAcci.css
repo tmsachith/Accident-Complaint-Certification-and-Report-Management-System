@@ -1,0 +1,76 @@
+.supervisor-accident {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .add-accident-button {
+    background-color: #6ab04c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  .add-accident-button:hover {
+    background-color: #3b945e;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .accident-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .accident-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #6ab04c;
+    padding: 15px 20px;
+    border-radius: 5px;
+    color: white;
+  }
+  
+  .accident-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .accident-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+  
+  .approved {
+    background-color: green;
+  }
+  
+  .line-manager {
+    background-color: red;
+  }
+  
+  .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  
+  .approved .status-dot {
+    background-color: green;
+  }
+  
+  .line-manager .status-dot {
+    background-color: red;
+  }
+  

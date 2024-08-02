@@ -1,0 +1,48 @@
+.complaints-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  font-family: 'Arial', sans-serif;
+}
+
+.complaints-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 2rem;
+}
+
+.complaints-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.complaints-container li {
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.complaints-container li:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.complaints-container li h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+  color: #007bff;
+}
+
+.complaints-container li p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.complaints-container li p strong {
+  font-weight: 600;
+  color: #333;
+}
