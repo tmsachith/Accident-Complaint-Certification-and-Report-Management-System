@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar';
 import Complaintcomp from '../components/ComplaintCompo';
 import './Complaints.css';
 
-const Accidents = () => {
+const Complaints = () => {
   return (
     <div className="complaints">
     
@@ -16,4 +16,4 @@ const Accidents = () => {
   );
 };
 
-export default Accidents;
+export default Complaints;
