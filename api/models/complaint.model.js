@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const complaintSchema = new mongoose.Schema({
     name: String,
     contactInfo: String,
