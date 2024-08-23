@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
 import complaintRouter from './routes/complaint.route.js'; // Import complaint router
+import notificationRouter from './routes/notification.route.js'; // Import notification router
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -36,6 +37,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api', complaintRouter); // Register complaint router
+app.use('/api', notificationRouter); // Register notification router
 
 // Error handling middleware
 app.use((err, req, res, next) => {

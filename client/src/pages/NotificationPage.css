@@ -1,0 +1,12 @@
+/* NotificationPage.css */
+
+.notification-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.notification-page-main {
+  display: flex;
+  flex-grow: 1;
+}

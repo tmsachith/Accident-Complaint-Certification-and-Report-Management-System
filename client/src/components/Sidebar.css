@@ -3,8 +3,11 @@
   background-color: #002060;
   color: white;
   padding: 1em;
-  border-radius: 0px; /* Add rounded corners to the sidebar */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add subtle shadow for a card-like effect */
+  border-radius: 0px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensure the logout is at the bottom */
 }
 
 .sidebar ul {
@@ -13,14 +16,24 @@
 }
 
 .sidebar li {
+  display: flex;
+  align-items: center; /* Align icons with text */
   padding: 1em;
-  margin: 0.5em 0; /* Add margin between items */
+  margin: 0.5em 0;
   cursor: pointer;
-  border-radius: 8px; /* Add rounded corners to each list item */
-  transition: background-color 0.3s, transform 0.3s; /* Add smooth transition effects */
+  border-radius: 8px;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .sidebar li:hover {
-  background-color: #003080; /* Darker background on hover */
-  transform: scale(1.02); /* Slightly enlarge the item on hover */
+  background-color: #003080;
+  transform: scale(1.02);
+}
+
+.sidebar .icon {
+  margin-right: 0.75em; /* Add space between icon and text */
+}
+
+.sidebar .logout {
+  margin-top: auto; /* Pushes the logout to the bottom */
 }

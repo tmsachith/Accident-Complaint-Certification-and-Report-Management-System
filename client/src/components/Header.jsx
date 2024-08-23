@@ -116,10 +116,10 @@ const Header = () => {
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
-    if (storedUsername) {
-      setUsername(storedUsername);
-    } else if (location.pathname === '/dashboard') {
+    if (!storedUsername && (location.pathname === '/dashboard' || location.pathname === '/complaints')) {
       navigate('/sign-in');
+    } else {
+      setUsername(storedUsername);
     }
   }, [location.pathname, navigate]);
 

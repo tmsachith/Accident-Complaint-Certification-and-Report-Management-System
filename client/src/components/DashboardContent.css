@@ -93,3 +93,71 @@
 .card5:hover .card5-content {
   transform: translate(-50%, -50%); /* Adjusted to match hover state */
 }
+
+.notifications-list {
+  width: 97%;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.notifications-list h2 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item:hover {
+  background-color: #f0f0f0;
+}
+
+.notification-item h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.notification-item p {
+  margin: 5px 0 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Add this to your DashboardContent.css */
+.timer {
+  width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 20px; /* Add space below the timer */
+  padding: 10px;
+  background-color: #f4f4f4; /* Light background for better visibility */
+  border-bottom: 1px solid #ddd; /* Border to separate from other content */
+}
+
+
+.loading-spinner {
+  margin: 20px auto;
+  border: 8px solid #f3f3f3; /* Light gray */
+  border-top: 8px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
