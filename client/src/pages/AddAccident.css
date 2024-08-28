@@ -1,0 +1,21 @@
+.addacci {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .addacci-main {
+    display: flex;
+    flex: 1;
+  }
+  
+  .form-container {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .form-container .accident-report-form {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  

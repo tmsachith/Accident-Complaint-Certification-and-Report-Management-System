@@ -1,76 +1,100 @@
 .supervisor-accident {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #f9f9f9;
-  }
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.add-accident-button {
+  background-color: #6ab04c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.add-accident-button:hover {
+  background-color: #3b945e;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #0c0b0b;
+  font-weight: bold;
   
-  .add-accident-button {
-    background-color: #6ab04c;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-  
-  .add-accident-button:hover {
-    background-color: #3b945e;
-  }
-  
-  h2 {
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .accident-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .accident-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #6ab04c;
-    padding: 15px 20px;
-    border-radius: 5px;
-    color: white;
-  }
-  
-  .accident-title {
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  .accident-status {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-  }
-  
-  .approved {
-    background-color: green;
-  }
-  
-  .line-manager {
-    background-color: red;
-  }
-  
-  .status-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-  }
-  
-  .approved .status-dot {
-    background-color: green;
-  }
-  
-  .line-manager .status-dot {
-    background-color: red;
-  }
-  
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.toggle-button {
+  background-color: #ccc;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.toggle-button.active {
+  background-color: #6ab04c;
+  color: white;
+}
+
+.toggle-button:hover {
+  background-color: #3b945e;
+}
+
+.accident-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.accident-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 5px;
+  color: rgb(19, 18, 18);
+}
+
+.approved {
+  background-color: rgb(34, 177, 34);
+}
+
+.line-manager {
+  background-color: rgb(230, 111, 111);
+}
+
+.accident-title {
+  font-size: 18px;
+}
+
+.accident-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-dot.approved {
+  background-color: rgb(0, 255, 0);
+}
+
+.status-dot.line-manager {
+  background-color: rgb(248, 5, 5);
+}

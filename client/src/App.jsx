@@ -11,9 +11,10 @@ import Accidents from './pages/Accidents';
 import Complaints from './pages/Complaints';
 import Loader from './components/Loader'; // Ensure you have this component
 import NotificationPage from './pages/NotificationPage'; // Import NotificationPage
+import AddAccident from './pages/Addaccident'; // Import AddAccident
 
-// Main App component
-function App() {
+// Component to manage loading state based on location changes
+const AppContent = () => {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
 
@@ -54,18 +55,19 @@ function App() {
             <Route path="/accidents" element={<Accidents />} /> {/* Accidents route */}
             <Route path="/complaints" element={<Complaints />} /> {/* Complaints route */}
             <Route path="/notifications" element={<NotificationPage />} /> {/* Notifications route */}
+            <Route path="/add-accident" element={<AddAccident />} /> {/* AddAccident route */}
           </Routes>
         </>
       )}
     </>
   );
-}
+};
 
 // AppWrapper component to provide BrowserRouter
 const AppWrapper = () => {
   return (
     <BrowserRouter>
-      <App />
+      <AppContent />
     </BrowserRouter>
   );
 };

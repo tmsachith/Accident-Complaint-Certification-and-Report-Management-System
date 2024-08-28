@@ -10,6 +10,12 @@ const DashboardContent = () => {
   const [notifications, setNotifications] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [loading, setLoading] = useState(true); // Add loading state
+  const [username, setUsername] = useState(null); // Add state for username
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    setUsername(storedUsername);
+  }, []);
 
   const handleCardNavigation = (route) => {
     navigate(route);
@@ -66,6 +72,11 @@ const DashboardContent = () => {
       <div className="timer">
         {currentTime.toLocaleTimeString()} {/* Display current time */}
       </div>
+      {username && (
+        <div className="welcome-message">
+          <span role="img" aria-label="wave">👋</span> Welcome, {username}!
+        </div>
+      )}
       {cardData.map((card, index) => (
         <div
           className="card5"
