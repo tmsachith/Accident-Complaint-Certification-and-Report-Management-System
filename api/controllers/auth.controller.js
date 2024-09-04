@@ -73,17 +73,22 @@ export const signin = async (req, res, next) => {
 
     // Generate JWT token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '1h'
+      expiresIn: '1h',
     });
 
     // Remove password from user object before sending response
-    const { password: pass, ...rest } = user._doc;
+    const { password: pass, username, position } = user._doc;
 
-    // Send response with token and user info
+    // Send response with token and user info (username and position)
     res.cookie('access_token', token, { httpOnly: true })
       .status(200)
-      .json(rest);
+      .json({
+        token,          // JWT token
+        username,       // User's username
+        position        // User's position
+      });
   } catch (error) {
     next(errorHandler(500, 'Sign in failed. Please try again.'));
   }
 };
+

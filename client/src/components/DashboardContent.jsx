@@ -11,10 +11,13 @@ const DashboardContent = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [loading, setLoading] = useState(true); // Add loading state
   const [username, setUsername] = useState(null); // Add state for username
+  const [position, setPosition] = useState(null); // Add state for position
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
+    const storedPosition = localStorage.getItem('position');
     setUsername(storedUsername);
+    setPosition(storedPosition);
   }, []);
 
   const handleCardNavigation = (route) => {
@@ -49,6 +52,7 @@ const DashboardContent = () => {
     return () => clearInterval(timer); // Cleanup on component unmount
   }, []);
 
+  // Define all card data
   const cardData = [
     { title: "Complaints", route: "/complaints", notificationCount: 5, icon: faExclamationTriangle },
     { title: "Accidents", route: "/accidents", notificationCount: 2, icon: faCarCrash },
@@ -56,6 +60,20 @@ const DashboardContent = () => {
     { title: "Reports", route: "/reports", notificationCount: '', icon: faFileAlt },
     { title: "Add User", route: "/sign-up", notificationCount: '', icon: faUserPlus },
   ];
+
+  // Filter cards based on position
+  const filteredCardData = cardData.filter(card => {
+    if (position === 'Supervisor' || position === 'Line Manager') {
+      return card.title === "Accidents";
+    }
+    if (position === 'Branch Manager') {
+      return card.title !== "Complaints" && card.title !== "Add User";
+    }
+    if (position === 'QA') {
+      return card.title !== "Add User";
+    }
+    return true; // Admin and any other roles can see all cards
+  });
 
   const timeAgo = (date) => {
     const now = new Date();
@@ -72,12 +90,12 @@ const DashboardContent = () => {
       <div className="timer">
         {currentTime.toLocaleTimeString()} {/* Display current time */}
       </div>
-      {username && (
+      {/* {username && position && (
         <div className="welcome-message">
-          <span role="img" aria-label="wave">👋</span> Welcome, {username}!
+          <span role="img" aria-label="wave">👋</span> Welcome, {username}! Position: {position}
         </div>
-      )}
-      {cardData.map((card, index) => (
+      )} */}
+      {filteredCardData.map((card, index) => (
         <div
           className="card5"
           key={index}

@@ -112,14 +112,17 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [username, setUsername] = useState(null);
+  const [position, setPosition] = useState(null);
   const [notificationCount, setNotificationCount] = useState(3); // Example notification count
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
+    const storedPosition = localStorage.getItem('position');
     if (!storedUsername && (location.pathname === '/dashboard' || location.pathname === '/complaints')) {
       navigate('/sign-in');
     } else {
       setUsername(storedUsername);
+      setPosition(storedPosition);
     }
   }, [location.pathname, navigate]);
 
@@ -129,7 +132,9 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('username');
+    localStorage.removeItem('position');
     setUsername(null);
+    setPosition(null);
     navigate('/sign-in');
   };
 
@@ -143,7 +148,7 @@ const Header = () => {
       <RightSection>
         {username ? (
           <>
-            <div style={{ color: 'white' }}>Welcome, {username}!</div>
+            <div style={{ color: 'white' }}>Welcome, {username} ({position})!</div>
             <NotificationIcon to="/notifications">
               <FaBell style={{ fontSize: '24px' }} />
               {notificationCount > 0 && (

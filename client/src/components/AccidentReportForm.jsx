@@ -29,6 +29,10 @@ const AccidentReportForm = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const showAlert = (message, type) => {
+    alert(`${type}: ${message}`);
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -71,6 +75,7 @@ const AccidentReportForm = () => {
       if (response.status === 201) {
         setSuccessMessage('Accident report created successfully!');
         setErrorMessage('');
+        showAlert('Accident report created successfully!', 'Success');
         // Optionally, reset the form after successful submission
         setFormData({
           employeeId: '',
@@ -98,6 +103,7 @@ const AccidentReportForm = () => {
     } catch (error) {
         const serverErrorMessage = error.response?.data?.message || error.message || 'An unknown error occurred';
         setErrorMessage(`Failed to create accident report: ${serverErrorMessage}`);
+        showAlert(`Failed to create accident report: ${serverErrorMessage}`, 'Error');
       setSuccessMessage('');
     }
   };
