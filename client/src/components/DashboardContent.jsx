@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle, faCarCrash, faCertificate, faFileAlt, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faCertificate, faFileAlt, faUserPlus, faPersonFallingBurst, faBell } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import './DashboardContent.css';
 
@@ -55,22 +55,23 @@ const DashboardContent = () => {
   // Define all card data
   const cardData = [
     { title: "Complaints", route: "/complaints", notificationCount: 5, icon: faExclamationTriangle },
-    { title: "Accidents", route: "/accidents", notificationCount: 2, icon: faCarCrash },
+    { title: "Accidents", route: "/accidents", notificationCount: 2, icon: faPersonFallingBurst },
     { title: "Certificate Changes", route: "/certificate-changes", notificationCount: 1, icon: faCertificate },
     { title: "Reports", route: "/reports", notificationCount: '', icon: faFileAlt },
     { title: "Add User", route: "/sign-up", notificationCount: '', icon: faUserPlus },
+    { title: "Announcements", route: "/announcements", notificationCount: '', icon: faBell } // Added Announcements card
   ];
-
+  
   // Filter cards based on position
   const filteredCardData = cardData.filter(card => {
     if (position === 'Supervisor' || position === 'Line Manager') {
-      return card.title === "Accidents";
+      return card.title === "Accidents" && card.title !== "Announcements";
     }
     if (position === 'Branch Manager') {
-      return card.title !== "Complaints" && card.title !== "Add User";
+      return card.title !== "Complaints" && card.title !== "Add User" && card.title !== "Announcements";
     }
     if (position === 'QA') {
-      return card.title !== "Add User";
+      return card.title !== "Add User" ;
     }
     return true; // Admin and any other roles can see all cards
   });

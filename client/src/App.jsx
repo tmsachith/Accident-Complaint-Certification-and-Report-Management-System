@@ -9,33 +9,29 @@ import Header from './components/Header';
 import Dashboard from './pages/Dashboard';
 import Accidents from './pages/Accidents';
 import Complaints from './pages/Complaints';
-import Loader from './components/Loader'; // Ensure you have this component
-import NotificationPage from './pages/NotificationPage'; // Import NotificationPage
-import AddAccident from './pages/Addaccident'; // Import AddAccident
+import Loader from './components/Loader';
+import NotificationPage from './pages/NotificationPage';
+import AddAccident from './pages/Addaccident';
+import Accidentshow from './pages/Accidentshow';
+import Settings from './pages/Settings'; // Import the Settings page
 
-// Component to manage loading state based on location changes
 const AppContent = () => {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    // Function to start loading
     const handleStartLoading = () => {
       setLoading(true);
     };
 
-    // Function to stop loading
     const handleStopLoading = () => {
       setLoading(false);
     };
 
-    // Start loading when location changes
     handleStartLoading();
 
-    // Simulate loading duration, you can adjust this as needed
     const loadingTimeout = setTimeout(handleStopLoading, 1190);
 
-    // Cleanup the timeout when component unmounts or location changes
     return () => clearTimeout(loadingTimeout);
   }, [location]);
 
@@ -56,6 +52,8 @@ const AppContent = () => {
             <Route path="/complaints" element={<Complaints />} /> {/* Complaints route */}
             <Route path="/notifications" element={<NotificationPage />} /> {/* Notifications route */}
             <Route path="/add-accident" element={<AddAccident />} /> {/* AddAccident route */}
+            <Route path="/accident-show/:id" element={<Accidentshow />} /> {/* Accidentshow route */}
+            <Route path="/settings" element={<Settings />} /> {/* Settings route */}
           </Routes>
         </>
       )}
@@ -63,13 +61,4 @@ const AppContent = () => {
   );
 };
 
-// AppWrapper component to provide BrowserRouter
-const AppWrapper = () => {
-  return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
-  );
-};
-
-export default AppWrapper;
+export default AppContent;

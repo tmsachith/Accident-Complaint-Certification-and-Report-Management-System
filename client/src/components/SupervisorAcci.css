@@ -50,6 +50,27 @@ h2 {
   background-color: #3b945e;
 }
 
+.toggle-button1 {
+  background-color: #ccc;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 5px;
+  width: 100%;
+}
+
+.toggle-button1.active {
+  background-color: #6ab04c;
+  color: white;
+}
+
+.toggle-button1:hover {
+  background-color: #3b945e;
+}
+
+
 .accident-list {
   display: flex;
   flex-direction: column;
@@ -89,6 +110,7 @@ h2 {
 .accident-details {
   display: flex;
   flex-direction: column;
+  
 }
 
 .accident-title {
@@ -99,7 +121,12 @@ h2 {
 .accident-location-department {
   font-size: 14px;
   color: #555;
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Adjust gap to create some spacing between icons and text */
+  white-space: nowrap; /* Prevent wrapping onto a new line */
 }
+
 
 .accident-status {
   display: flex;

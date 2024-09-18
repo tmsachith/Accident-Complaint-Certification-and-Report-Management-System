@@ -35,6 +35,14 @@
   .form-group input[type="file"] {
     margin-top: 5px;
   }
+
+  .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+  }
   
   .form-buttons {
     text-align: center;

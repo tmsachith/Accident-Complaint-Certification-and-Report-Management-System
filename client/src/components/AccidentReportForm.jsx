@@ -19,9 +19,9 @@ const AccidentReportForm = () => {
     reportedTo: '',
     witnesses: '',
     witnessContact: '',
-    attachments: [], // Array of Base64 strings
+    attachments: [],
     supervisorComments: '',
-    status: 'Pending Review',
+    status: 'Line Manager Review',
     notifyManagement: false,
     additionalNotes: '',
   });
@@ -76,7 +76,6 @@ const AccidentReportForm = () => {
         setSuccessMessage('Accident report created successfully!');
         setErrorMessage('');
         showAlert('Accident report created successfully!', 'Success');
-        // Optionally, reset the form after successful submission
         setFormData({
           employeeId: '',
           employeeName: '',
@@ -95,15 +94,15 @@ const AccidentReportForm = () => {
           witnessContact: '',
           attachments: [],
           supervisorComments: '',
-          status: 'Pending Review',
+          status: 'Line Manager Review',
           notifyManagement: false,
           additionalNotes: '',
         });
       }
     } catch (error) {
-        const serverErrorMessage = error.response?.data?.message || error.message || 'An unknown error occurred';
-        setErrorMessage(`Failed to create accident report: ${serverErrorMessage}`);
-        showAlert(`Failed to create accident report: ${serverErrorMessage}`, 'Error');
+      const serverErrorMessage = error.response?.data?.message || error.message || 'An unknown error occurred';
+      setErrorMessage(`Failed to create accident report: ${serverErrorMessage}`);
+      showAlert(`Failed to create accident report: ${serverErrorMessage}`, 'Error');
       setSuccessMessage('');
     }
   };
@@ -180,6 +179,14 @@ const AccidentReportForm = () => {
       <div className="form-group">
         <label htmlFor="supervisorComments">Supervisor’s Comments:</label>
         <textarea id="supervisorComments" name="supervisorComments" value={formData.supervisorComments} onChange={handleChange} />
+      </div>
+      <div className="form-group">
+        <label htmlFor="status">Status:</label>
+        <select id="status" name="status" value={formData.status} onChange={handleChange} required>
+          <option value="Line Manager Review">Line Manager Review</option>
+          <option value="Branch Manager Review">Branch Manager Review</option>
+          <option value="QA Review">QA Review</option>
+        </select>
       </div>
       <div className="form-buttons">
         <button type="submit">Submit</button>

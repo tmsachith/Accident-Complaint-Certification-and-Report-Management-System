@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaMapMarkerAlt, FaUserTie, FaFileAlt, FaClock, FaComments } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaUserTie } from 'react-icons/fa';
 import './SupervisorAcci.css';
 
 const SupervisorAccident = () => {
-  const [showApproved, setShowApproved] = useState(false); // Default to showing not approved
+  const [showApproved, setShowApproved] = useState(false);
   const [accidents, setAccidents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedAccident, setSelectedAccident] = useState(null); // State for selected accident
+  const [username, setUsername] = useState(null);
+  const [position, setPosition] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +17,10 @@ const SupervisorAccident = () => {
       try {
         const response = await fetch('/api/accidents');
         const data = await response.json();
-        setAccidents(data);
+
+        // Sort accidents by date in descending order
+        const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        setAccidents(sortedData);
       } catch (error) {
         console.error('Error fetching accidents:', error);
       } finally {
@@ -25,21 +29,23 @@ const SupervisorAccident = () => {
     };
 
     fetchAccidents();
+
+    // Fetch username and position from localStorage
+    const storedUsername = localStorage.getItem('username');
+    const storedPosition = localStorage.getItem('position');
+    setUsername(storedUsername);
+    setPosition(storedPosition);
   }, []);
 
   const handleShowApproved = () => setShowApproved(true);
   const handleShowLineManager = () => setShowApproved(false);
 
   const handleAddAccident = () => {
-    navigate('/add-accident');
+    window.open('/add-accident', '_blank');
   };
 
   const handleAccidentClick = (accident) => {
-    setSelectedAccident(accident);
-  };
-
-  const handleClosePopup = () => {
-    setSelectedAccident(null);
+    window.open(`/accident-show/${accident._id}`, '_blank');
   };
 
   const renderAccidentList = (accidents) => {
@@ -47,12 +53,12 @@ const SupervisorAccident = () => {
       <div
         className={`accident-item ${accident.status === 'Approved' ? 'approved' : 'line-manager'}`}
         key={index}
-        onClick={() => handleAccidentClick(accident)} // Make accident item clickable
+        onClick={() => handleAccidentClick(accident)}
       >
         <div className="accident-info">
           {Array.isArray(accident.attachments) && accident.attachments.length > 0 && (
             <img
-              src={accident.attachments[0]} // Assuming attachments contain URLs
+              src={accident.attachments[0]} 
               alt="Attachment"
               className="accident-image"
             />
@@ -72,24 +78,43 @@ const SupervisorAccident = () => {
     ));
   };
 
+  const filteredAccidents = showApproved
+  ? accidents.filter((accident) => accident.status === 'Approved')
+  : position === 'Line Manager'
+  ? accidents.filter((accident) => accident.status === 'Line Manager Review')
+  : position === 'Branch Manager'
+  ? accidents.filter((accident) => accident.status === 'Branch Manager Review')
+  : position === 'QA'
+  ? accidents.filter((accident) => accident.status === 'QA Review')
+  : position === 'Supervisor'
+  ? accidents.filter((accident) =>
+      ['Line Manager Review', 'Branch Manager Review', 'QA Review'].includes(accident.status)
+    )
+  : accidents.filter((accident) => accident.status === 'Pending Review');
+
   return (
     <div className="supervisor-accident">
+      {username && position && (
+        <div className="user-info">
+          <span>{username} ({position})!</span>
+        </div>
+      )}
       <button className="add-accident-button" onClick={handleAddAccident}>
         Add Accident
       </button>
-      <h2>Recent Accidents</h2>
+      {/* <h2>Recent Accidents</h2> */}
       <div className="button-group">
         <button
-          className={`toggle-button ${!showApproved ? 'active' : ''}`}
+          className={`toggle-button1 ${!showApproved ? 'active' : ''}`}
           onClick={handleShowLineManager}
         >
-          Not Approved
+          Approval Proccessing
         </button>
         <button
           className={`toggle-button ${showApproved ? 'active' : ''}`}
           onClick={handleShowApproved}
         >
-          Approved
+          Closed
         </button>
       </div>
       
@@ -97,43 +122,7 @@ const SupervisorAccident = () => {
         <div className="loader">Loading...</div>
       ) : (
         <div className="accident-list">
-          {showApproved
-            ? renderAccidentList(accidents.filter((accident) => accident.status === 'Approved'))
-            : renderAccidentList(accidents.filter((accident) => accident.status === 'Pending Review'))
-          }
-        </div>
-      )}
-
-      {/* Popup for detailed accident view */}
-      {selectedAccident && (
-        <div className="popup-overlay" onClick={handleClosePopup}>
-          <div className="popup-card" onClick={(e) => e.stopPropagation()}>
-            <button className="close-button" onClick={handleClosePopup}>
-              &times;
-            </button>
-            <h2>{selectedAccident.description}</h2>
-            <div className="popup-details">
-              <p><strong><FaMapMarkerAlt /> Location:</strong> {selectedAccident.accidentLocation}</p>
-              <p><strong><FaUserTie /> Department:</strong> {selectedAccident.department}</p>
-              <p><strong><FaFileAlt /> Description:</strong> {selectedAccident.description}</p>
-              <p><strong><FaClock /> Accident Date:</strong> {new Date(selectedAccident.accidentDate).toLocaleDateString()}</p>
-              <p><strong><FaClock /> Accident Time:</strong> {selectedAccident.accidentTime}</p>
-              <p><strong><FaComments /> Supervisor Comments:</strong> {selectedAccident.supervisorComments}</p>
-              <p><strong>Status:</strong> {selectedAccident.status}</p>
-              <p><strong>Notify Management:</strong> {selectedAccident.notifyManagement ? 'Yes' : 'No'}</p>
-              <p><strong>Additional Notes:</strong> {selectedAccident.additionalNotes}</p>
-              {selectedAccident.attachments && selectedAccident.attachments.length > 0 && (
-                <div className="attachments-section">
-                  <h3>Attachments:</h3>
-                  <div className="attachments-grid">
-                    {selectedAccident.attachments.map((attachment, index) => (
-                      <img key={index} src={attachment} alt={`Attachment ${index + 1}`} className="attachment-image" />
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+          {renderAccidentList(filteredAccidents)}
         </div>
       )}
     </div>

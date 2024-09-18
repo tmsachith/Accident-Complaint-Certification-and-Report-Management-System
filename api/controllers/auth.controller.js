@@ -92,3 +92,60 @@ export const signin = async (req, res, next) => {
   }
 };
 
+// Verify Current Password
+export const verifyPassword = async (req, res, next) => {
+  const { email, currentPassword } = req.body;
+  try {
+    // Validate input
+    if (!email || !currentPassword) {
+      return next(errorHandler(400, 'Email and current password are required.'));
+    }
+
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return next(errorHandler(404, 'User not found.'));
+    }
+
+    // Validate password
+    const isPasswordValid = bcrypt.compareSync(currentPassword, user.password);
+    if (!isPasswordValid) {
+      return next(errorHandler(401, 'Invalid current password.'));
+    }
+
+    // Send success response if password is valid
+    res.status(200).json({ message: 'Current password is valid' });
+  } catch (error) {
+    next(errorHandler(500, 'Password verification failed. Please try again.'));
+  }
+};
+
+// Update Password
+export const changePassword = async (req, res, next) => {
+  const { email, newPassword } = req.body;
+  try {
+    // Validate input
+    if (!email || !newPassword) {
+      return next(errorHandler(400, 'Email and new password are required.'));
+    }
+
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return next(errorHandler(404, 'User not found.'));
+    }
+
+    // Hash new password and update user record
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+    user.password = hashedPassword;
+
+    // Save updated user to the database
+    await user.save();
+
+    // Send success response
+    res.status(200).json({ message: 'Password updated successfully' });
+  } catch (error) {
+    next(errorHandler(500, 'Password update failed. Please try again.'));
+  }
+};
+
