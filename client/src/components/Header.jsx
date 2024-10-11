@@ -3,6 +3,7 @@ import { FaBell } from 'react-icons/fa';
 import styled from 'styled-components';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios'; // Import axios for making API requests
+import logo from '../assets/logo.png'; // Import the logo image
 
 // Styled components for the header
 const HeaderWrapper = styled.header`
@@ -10,16 +11,25 @@ const HeaderWrapper = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background: linear-gradient(270deg, #6ab04c, #3b945e);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increased vertical offset and blur */
+  background: white; /* Set background color to white */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 `;
 
 const Title = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between logo and text */
+
   h1 {
     margin: 0;
     font-size: 24px;
-    color: #ffffff;
+    color: #3b945e; /* Adjusted text color */
     font-weight: bold;
+  }
+
+  img {
+    height: 40px; /* Adjust the height as needed */
+    width: auto;
   }
 `;
 
@@ -31,7 +41,7 @@ const RightSection = styled.div`
 
 const Button = styled(Link)`
   --primary-color: background: linear-gradient(90deg, #6ab04c, #3b945e);
-  --secondary-color: #fff;
+  --secondary-color: #3b945e; /* Set text color to green */
   background: linear-gradient(90deg, #6ab04c, #3b945e);
   --arrow-width: 10px;
   --arrow-stroke: 2px;
@@ -94,7 +104,7 @@ const NotificationIcon = styled(Link)`
   position: relative;
   display: flex;
   align-items: center;
-  color: white;
+  color: #3b945e; /* Adjusted icon color */
 
   .notification-count {
     position: absolute;
@@ -107,6 +117,14 @@ const NotificationIcon = styled(Link)`
     font-size: 0.75rem;
     font-weight: bold;
   }
+`;
+
+const WelcomeCard = styled.div`
+  background-color: #6ab04c;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-weight: bold;
 `;
 
 const Header = () => {
@@ -155,15 +173,16 @@ const Header = () => {
 
   return (
     <HeaderWrapper>
-      <Link to="/">
+      <Link to="/dashboard">
         <Title>
+          <img src={logo} alt="Logo" /> {/* Add the logo image here */}
           <h1>BIO FOODS</h1>
         </Title>
       </Link>
       <RightSection>
         {username ? (
           <>
-            <div style={{ color: 'white' }}>Welcome, {username} ({position})!</div>
+            <WelcomeCard>Welcome, {username} ({position})!</WelcomeCard>
             <NotificationIcon to="/notifications">
               <FaBell style={{ fontSize: '24px' }} />
               {notificationCount > 0 && (
@@ -185,9 +204,7 @@ const Header = () => {
             </Button>
             <Button as="button" onClick={handleSignInClick}>
               Sign In
-              <div className="arrow-wrapper">
-                <div className="arrow"></div>
-              </div>
+              <div className="arrow-wrapper"></div>
             </Button>
             <Button to="/contact">
               Contact Us

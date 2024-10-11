@@ -77,13 +77,17 @@ const SupervisorAccident = () => {
         <div className="accident-info">
           {Array.isArray(accident.attachments) && accident.attachments.length > 0 && (
             <img
-              src={accident.attachments[0]} 
+              src={accident.attachments[0]}
               alt="Attachment"
               className="accident-image"
             />
           )}
           <div className="accident-details">
-            <div className="accident-title">{accident.description}</div>
+            <div className="accident-title">
+              {accident.description.length > 50
+                ? `${accident.description.substring(0, 100)}...`
+                : accident.description}
+            </div>
             <div className="accident-location-department">
               <FaMapMarkerAlt /> {accident.accidentLocation} | <FaUserTie /> {accident.department}
             </div>

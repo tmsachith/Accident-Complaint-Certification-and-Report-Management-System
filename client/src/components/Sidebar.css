@@ -1,8 +1,9 @@
 .sidebar {
-  width: 250px;
-  background-color: #002060;
-  background: linear-gradient(0deg, #6ab04c, #3b945e);
-  color: white;
+  width: 20%;
+  max-width: 20%;
+  background-color: white;
+  background: linear-gradient(0deg, white, white); /* Ensuring a solid white background */
+  color: green; /* Set text color to green */
   padding: 1em;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -26,7 +27,7 @@
 }
 
 .sidebar li:hover {
-  background-color: #003080;
+  background-color: #f0f0f0; /* Light gray background on hover */
   transform: scale(1.02);
 }
 
