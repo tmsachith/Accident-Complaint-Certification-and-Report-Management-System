@@ -7,7 +7,7 @@ const ComplaintCompo = () => {
   const [complaints, setComplaints] = useState([]);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
   const [reviewerNote, setReviewerNote] = useState('');
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchComplaints = async () => {
@@ -17,7 +17,7 @@ const ComplaintCompo = () => {
       } catch (error) {
         console.error('Error fetching complaints:', error);
       } finally {
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
       }
     };
 
@@ -26,7 +26,7 @@ const ComplaintCompo = () => {
 
   const handleComplaintClick = (complaint) => {
     setSelectedComplaint(complaint);
-    setReviewerNote(complaint.reviewerNote || '');  // Set initial note value
+    setReviewerNote(complaint.reviewerNote || '');
   };
 
   const handleClosePopup = () => {
@@ -40,7 +40,7 @@ const ComplaintCompo = () => {
           id: selectedComplaint._id,
           reviewerNote,
         });
-        setSelectedComplaint({ ...selectedComplaint, reviewerNote }); // Update local state
+        setSelectedComplaint({ ...selectedComplaint, reviewerNote });
         alert('Reviewer note saved successfully');
       } catch (error) {
         console.error('Error saving reviewer note:', error);
@@ -53,9 +53,10 @@ const ComplaintCompo = () => {
     <div className="complaints-container" id="complaints-container">
       <h1 id="complaints-title">Complaints List</h1>
 
-      {/* Loader */}
       {loading ? (
-        <div className="loader" id="loader">Loading...</div>
+        <div className="loader" id="loader">
+          <div className="spinner"></div>
+        </div>
       ) : (
         <ul id="complaints-list">
           {complaints.slice().reverse().map(complaint => (
@@ -104,7 +105,6 @@ const ComplaintCompo = () => {
               <p><FaCommentDots /> <strong>Additional Comments:</strong> {selectedComplaint.additionalComments}</p>
             </div>
 
-            {/* Reviewer Note Section */}
             <div className="reviewer-note-section" id="reviewer-note-section">
               <h3 id="reviewer-note-title">Add Reviewer Note</h3>
               <textarea
@@ -137,4 +137,3 @@ const ComplaintCompo = () => {
 };
 
 export default ComplaintCompo;
- 

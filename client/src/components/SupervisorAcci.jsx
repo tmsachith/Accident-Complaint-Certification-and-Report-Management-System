@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaMapMarkerAlt, FaUserTie } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaUserTie, FaCheck } from 'react-icons/fa';
 import './SupervisorAcci.css';
 
 const SupervisorAccident = () => {
@@ -9,6 +9,9 @@ const SupervisorAccident = () => {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [position, setPosition] = useState(null);
+  const [filterLocation, setFilterLocation] = useState('');
+  const [filterStartDate, setFilterStartDate] = useState('');
+  const [filterEndDate, setFilterEndDate] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,7 +21,6 @@ const SupervisorAccident = () => {
         const response = await fetch('/api/accidents');
         const data = await response.json();
 
-        // Sort accidents by date in descending order
         const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
         setAccidents(sortedData);
       } catch (error) {
@@ -30,7 +32,6 @@ const SupervisorAccident = () => {
 
     fetchAccidents();
 
-    // Fetch username and position from localStorage
     const storedUsername = localStorage.getItem('username');
     const storedPosition = localStorage.getItem('position');
     setUsername(storedUsername);
@@ -46,6 +47,24 @@ const SupervisorAccident = () => {
 
   const handleAccidentClick = (accident) => {
     window.open(`/accident-show/${accident._id}`, '_blank');
+  };
+
+  const getAdditionalText = (status) => {
+    const checks = [];
+    if (status === 'Line Manager Review') {
+      checks.push('Supervisor');
+    }
+    if (status === 'Branch Manager Review') {
+      checks.push('Supervisor', 'Line Manager');
+    }
+    if (status === 'QA Review') {
+      checks.push('Supervisor', 'Line Manager', 'Branch Manager');
+    }
+    return checks.map((role, index) => (
+      <div key={index} className="check-item">
+        <FaCheck /> {role}
+      </div>
+    ));
   };
 
   const renderAccidentList = (accidents) => {
@@ -71,44 +90,63 @@ const SupervisorAccident = () => {
           </div>
         </div>
         <div className="accident-status">
-          {accident.status}
-          <span className={`status-dot ${accident.status === 'Approved' ? 'approved' : 'line-manager'}`}></span>
+          <div className="status-text">
+            {accident.status}
+            <span className={`status-dot ${accident.status === 'Approved' ? 'approved' : 'line-manager'}`}></span>
+          </div>
+          <div className="additional-info">{getAdditionalText(accident.status)}</div>
         </div>
       </div>
     ));
   };
 
-  const filteredAccidents = showApproved
-  ? accidents.filter((accident) => accident.status === 'Approved')
-  : position === 'Line Manager'
-  ? accidents.filter((accident) => accident.status === 'Line Manager Review')
-  : position === 'Branch Manager'
-  ? accidents.filter((accident) => accident.status === 'Branch Manager Review')
-  : position === 'QA'
-  ? accidents.filter((accident) => accident.status === 'QA Review')
-  : position === 'Supervisor'
-  ? accidents.filter((accident) =>
-      ['Line Manager Review', 'Branch Manager Review', 'QA Review'].includes(accident.status)
-    )
-  : accidents.filter((accident) => accident.status === 'Pending Review');
+  const filteredAccidents = accidents.filter((accident) => {
+    const matchesLocation = filterLocation ? accident.accidentLocation.toLowerCase().includes(filterLocation.toLowerCase()) : true;
+    const matchesDate = filterStartDate && filterEndDate
+      ? new Date(accident.date) >= new Date(filterStartDate) && new Date(accident.date) <= new Date(filterEndDate)
+      : true;
+    return matchesLocation && matchesDate && (
+      showApproved ? accident.status === 'Approved' :
+      position === 'Admin' ? ['Line Manager Review', 'Branch Manager Review', 'QA Review'].includes(accident.status) :
+      position === 'Line Manager' ? accident.status === 'Line Manager Review' :
+      position === 'Branch Manager' ? accident.status === 'Branch Manager Review' :
+      position === 'QA' ? accident.status === 'QA Review' :
+      position === 'Supervisor' ? ['Line Manager Review', 'Branch Manager Review', 'QA Review'].includes(accident.status) :
+      accident.status === 'Pending Review'
+    );
+  });
 
   return (
     <div className="supervisor-accident">
-      {username && position && (
-        <div className="user-info">
-          <span>{username} ({position})!</span>
-        </div>
+      <div className="filter-section">
+        <input
+          type="text"
+          placeholder="Filter by location"
+          value={filterLocation}
+          onChange={(e) => setFilterLocation(e.target.value)}
+        />
+        <input
+          type="date"
+          value={filterStartDate}
+          onChange={(e) => setFilterStartDate(e.target.value)}
+        />
+        <input
+          type="date"
+          value={filterEndDate}
+          onChange={(e) => setFilterEndDate(e.target.value)}
+        />
+      </div>
+      {position === 'Supervisor' && (
+        <button className="add-accident-button" onClick={handleAddAccident}>
+          Add Accident
+        </button>
       )}
-      <button className="add-accident-button" onClick={handleAddAccident}>
-        Add Accident
-      </button>
-      {/* <h2>Recent Accidents</h2> */}
       <div className="button-group">
         <button
           className={`toggle-button1 ${!showApproved ? 'active' : ''}`}
           onClick={handleShowLineManager}
         >
-          Approval Proccessing
+          Approval Processing
         </button>
         <button
           className={`toggle-button ${showApproved ? 'active' : ''}`}

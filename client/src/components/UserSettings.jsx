@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './UserSettings.css';
 
@@ -7,7 +7,14 @@ const UserSettings = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [showNewPasswordFields, setShowNewPasswordFields] = useState(false);
-  const [email, setEmail] = useState(''); // Assuming user email is available
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('email');
+    if (storedEmail) {
+      setEmail(storedEmail);
+    }
+  }, []);
 
   const handleCurrentPasswordSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +22,7 @@ const UserSettings = () => {
     try {
       const response = await axios.post('/api/auth/verify-password', { email, currentPassword });
       if (response.status === 200) {
-        setShowNewPasswordFields(true); // Show new password fields if current password is valid
+        setShowNewPasswordFields(true);
       }
     } catch (error) {
       alert('Current password is incorrect');

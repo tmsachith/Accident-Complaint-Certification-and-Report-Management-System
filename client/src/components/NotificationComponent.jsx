@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './NotificationComponent.css';
 import { useLocation } from 'react-router-dom';
+import { FaUserPlus, FaSync, FaBullhorn } from 'react-icons/fa'; // Updated import
 
 const NotificationComponent = () => {
   const [notifications, setNotifications] = useState([]);
@@ -40,19 +41,47 @@ const NotificationComponent = () => {
     return () => clearTimeout(loadingTimeout);
   }, [location]);
 
+  const formatDescription = (text) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text
+      .split('\n')
+      .map((line, index) => (
+        <span key={index}>
+          {line.split(urlRegex).map((part, i) =>
+            urlRegex.test(part) ? (
+              <a key={i} href={part} target="_blank" rel="noopener noreferrer">
+                {part}
+              </a>
+            ) : (
+              part
+            )
+          )}
+          <br />
+        </span>
+      ));
+  };
+
+  const getIcon = (type) => {
+    switch (type) {
+      case 'Signup Notification':
+        return <FaUserPlus className="icon" />;
+      case 'system':
+        return <FaSync className="icon" />; // Updated icon
+      case 'announcement':
+        return <FaBullhorn className="icon" />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="notifications-container">
       <h1 className='g11'>Notifications List</h1>
       {loading ? (
         <div className="dot-spinner">
-          <div className="dot-spinner__dot"></div>
-          <div className="dot-spinner__dot"></div>
-          <div className="dot-spinner__dot"></div>
-          <div className="dot-spinner__dot"></div>
-          <div className="dot-spinner__dot"></div>
-          <div className="dot-spinner__dot"></div>
-          <div className="dot-spinner__dot"></div>
-          <div className="dot-spinner__dot"></div>
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="dot-spinner__dot"></div>
+          ))}
         </div>
       ) : error ? (
         <div className="error">
@@ -91,17 +120,25 @@ const NotificationComponent = () => {
             <li key={notification._id} className="cardnotifi">
               <div className="containernotifi">
                 <div className="leftnotifi">
-                  <div className="status-indnotifi"></div>
+                  <div className="status-indnotifi">{getIcon(notification.type)}</div>
                 </div>
                 <div className="rightnotifi">
                   <div className="text-wrapnotifi">
-                    <h2>{notification.title}</h2> {/* Display title */}
-                    <p>{notification.description}</p> {/* Display description */}
-                    <p><strong>Unique ID:</strong> {notification.uniqueId}</p>
-                    <p><strong>Created At:</strong> {new Date(notification.createdAt).toLocaleString()}</p>
+                    <h2 className="title">{notification.title}</h2>
+                    <hr className="divider" />
+                    <p>{formatDescription(notification.description)}</p>
+                    <p className="time">
+                      {new Date(notification.createdAt).toLocaleString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </p>
                   </div>
                   <div className="button-wrapnotifi">
-                    <button className="primary-ctanotifi">View file</button>
                     <button className="secondary-ctanotifi">Mark as read</button>
                   </div>
                 </div>

@@ -9,9 +9,11 @@ const DashboardContent = () => {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [loading, setLoading] = useState(true); // Add loading state
-  const [username, setUsername] = useState(null); // Add state for username
-  const [position, setPosition] = useState(null); // Add state for position
+  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState(null);
+  const [position, setPosition] = useState(null);
+  const [pendingCertificateCount, setPendingCertificateCount] = useState(0);
+  const [approvalAccidentCount, setApprovalAccidentCount] = useState(0);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -30,39 +32,73 @@ const DashboardContent = () => {
 
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get('/api/notifications'); // Adjust the endpoint as needed
+      const response = await axios.get('/api/notifications');
       const sortedNotifications = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setNotifications(sortedNotifications.slice(0, 5));
     } catch (error) {
       console.error('Error fetching notifications:', error);
     } finally {
-      setLoading(false); // Set loading to false after fetching is complete
+      setLoading(false);
+    }
+  };
+
+  const fetchCertificateChanges = async () => {
+    try {
+      const response = await axios.get('/api/certificate-changes');
+      const changes = response.data;
+
+      const pendingChanges = changes.filter(change => change.status === 'Pending Review');
+      setPendingCertificateCount(pendingChanges.length);
+    } catch (error) {
+      console.error('Error fetching certificate changes:', error);
+    }
+  };
+
+  const fetchAccidents = async () => {
+    try {
+      const response = await axios.get('/api/accidents');
+      const accidents = response.data;
+
+      const approvalAccidents = accidents.filter(accident => {
+        return (
+          position === 'Admin' ? ['Line Manager Review', 'Branch Manager Review', 'QA Review'].includes(accident.status) :
+          position === 'Line Manager' ? accident.status === 'Line Manager Review' :
+          position === 'Branch Manager' ? accident.status === 'Branch Manager Review' :
+          position === 'QA' ? accident.status === 'QA Review' :
+          position === 'Supervisor' ? ['Line Manager Review', 'Branch Manager Review', 'QA Review'].includes(accident.status) :
+          accident.status === 'Pending Review'
+        );
+      });
+
+      setApprovalAccidentCount(approvalAccidents.length);
+    } catch (error) {
+      console.error('Error fetching accidents:', error);
     }
   };
 
   useEffect(() => {
     fetchNotifications();
-  }, []);
+    fetchCertificateChanges();
+    fetchAccidents();
+  }, [position]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
-    }, 1000); // Update every second
+    }, 1000);
 
-    return () => clearInterval(timer); // Cleanup on component unmount
+    return () => clearInterval(timer);
   }, []);
 
-  // Define all card data
   const cardData = [
     { title: "Complaints", route: "/complaints", notificationCount: 5, icon: faExclamationTriangle },
-    { title: "Accidents", route: "/accidents", notificationCount: 2, icon: faPersonFallingBurst },
-    { title: "Certificate Changes", route: "/certificate-changes", notificationCount: 1, icon: faCertificate },
-    { title: "Reports", route: "/reports", notificationCount: '', icon: faFileAlt },
+    { title: "Accidents", route: "/accidents", notificationCount: approvalAccidentCount, icon: faPersonFallingBurst },
+    { title: "Certificate Changes", route: "/certificate-changes", notificationCount: pendingCertificateCount, icon: faCertificate },
+    { title: "Reports", route: "/report", notificationCount: '', icon: faFileAlt },
     { title: "Add User", route: "/sign-up", notificationCount: '', icon: faUserPlus },
-    { title: "Announcements", route: "/announcements", notificationCount: '', icon: faBell } // Added Announcements card
+    { title: "Announcements", route: "/announcements", notificationCount: '', icon: faBell }
   ];
   
-  // Filter cards based on position
   const filteredCardData = cardData.filter(card => {
     if (position === 'Supervisor' || position === 'Line Manager') {
       return card.title === "Accidents" && card.title !== "Announcements";
@@ -71,14 +107,14 @@ const DashboardContent = () => {
       return card.title !== "Complaints" && card.title !== "Add User" && card.title !== "Announcements";
     }
     if (position === 'QA') {
-      return card.title !== "Add User" ;
+      return card.title !== "Add User";
     }
-    return true; // Admin and any other roles can see all cards
+    return true;
   });
 
   const timeAgo = (date) => {
     const now = new Date();
-    const diff = Math.floor((now - new Date(date)) / 60000); // Difference in minutes
+    const diff = Math.floor((now - new Date(date)) / 60000);
 
     if (diff < 1) return 'Just now';
     if (diff < 60) return `${diff} minute${diff > 1 ? 's' : ''} ago`;
@@ -89,13 +125,8 @@ const DashboardContent = () => {
   return (
     <div className="dashboard-content">
       <div className="timer">
-        {currentTime.toLocaleTimeString()} {/* Display current time */}
+        {currentTime.toLocaleTimeString()}
       </div>
-      {/* {username && position && (
-        <div className="welcome-message">
-          <span role="img" aria-label="wave">👋</span> Welcome, {username}! Position: {position}
-        </div>
-      )} */}
       {filteredCardData.map((card, index) => (
         <div
           className="card5"
@@ -105,9 +136,11 @@ const DashboardContent = () => {
           onClick={() => handleCardNavigation(card.route)}
           onKeyDown={(e) => e.key === 'Enter' && handleCardNavigation(card.route)}
         >
-          <div className="notification-badge">
-            {card.notificationCount > 0 && <span>{card.notificationCount}</span>}
-          </div>
+          {card.notificationCount && card.notificationCount > 0 && (
+            <div className="notification-badge">
+              <span>{card.notificationCount}</span>
+            </div>
+          )}
           <div className="card5-content">
             <FontAwesomeIcon icon={card.icon} size="3x" />
             <span>{card.title}</span>
@@ -117,7 +150,7 @@ const DashboardContent = () => {
       <div className="notifications-list">
         <h2>Recent Notifications</h2>
         {loading ? (
-          <div className="loading-spinner"></div> // Show loading spinner while loading
+          <div className="loading-spinner"></div>
         ) : (
           notifications.length === 0 ? (
             <p>No notifications available</p>

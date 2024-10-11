@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { FaMapMarkerAlt, FaUserTie, FaFileAlt, FaClock, FaComments, FaIdBadge, FaUserCheck } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaUserTie, FaFileAlt, FaClock, FaComments, FaIdBadge } from 'react-icons/fa';
 import './Accident_details.css';
 
 const AccidentDetails = ({ accidentId }) => {
   const [accident, setAccident] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [comment, setComment] = useState('');
+  const [alertMessage, setAlertMessage] = useState(null);
 
   useEffect(() => {
     const fetchAccidentDetails = async () => {
@@ -20,16 +22,46 @@ const AccidentDetails = ({ accidentId }) => {
         setLoading(false);
       }
     };
-  
+
     fetchAccidentDetails();
   }, [accidentId]);
 
-  const openImageModal = (image) => {
-    setSelectedImage(image);
-  };
+  const handleCommentChange = (e) => setComment(e.target.value);
 
-  const closeImageModal = () => {
-    setSelectedImage(null);
+  const handleSubmitComment = async () => {
+    let updatedStatus = accident.status;
+    if (accident.status === 'Line Manager Review') {
+      updatedStatus = 'Branch Manager Review';
+    } else if (accident.status === 'Branch Manager Review') {
+      updatedStatus = 'QA Review';
+    } else if (accident.status === 'QA Review') {
+      updatedStatus = 'Approved';
+    }
+
+    try {
+      const response = await fetch(`/api/accidents/${accidentId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          comment,
+          status: updatedStatus,
+        }),
+      });
+
+      if (response.ok) {
+        const updatedAccident = await response.json();
+        setAccident(updatedAccident);
+        setComment('');
+        setAlertMessage({ type: 'success', text: 'Update successful!' });
+      } else {
+        setAlertMessage({ type: 'error', text: 'Failed to update accident' });
+      }
+    } catch (error) {
+      console.error('Error updating comment:', error);
+      setAlertMessage({ type: 'error', text: 'Error updating comment' });
+    }
   };
 
   if (loading) {
@@ -43,6 +75,12 @@ const AccidentDetails = ({ accidentId }) => {
   return (
     <div className="accident-details-container">
       <h2>Accident Details</h2>
+
+      {alertMessage && (
+        <div className={`alert ${alertMessage.type}`}>
+          {alertMessage.text}
+        </div>
+      )}
 
       <div className="section">
         <h3>Employee Details</h3>
@@ -64,19 +102,37 @@ const AccidentDetails = ({ accidentId }) => {
           <p><strong><FaClock /> Accident Date:</strong> {new Date(accident.accidentDate).toLocaleDateString()}</p>
           <p><strong><FaClock /> Accident Time:</strong> {accident.accidentTime}</p>
         </div>
+        <div className="info-row">
+          <p><strong>Injury Type:</strong> {accident.injuryType}</p>
+          <p><strong>Severity:</strong> {accident.severity}</p>
+          <p><strong>Body Part Affected:</strong> {accident.bodyPartAffected}</p>
+          <p><strong>Actions Taken:</strong> {accident.actionsTaken}</p>
+          <p><strong>Reported To:</strong> {accident.reportedTo}</p>
+          <p><strong>Witnesses:</strong> {accident.witnesses}</p>
+          <p><strong>Witness Contact:</strong> {accident.witnessContact}</p>
+        </div>
+      </div>
+
+      <div className="status-card">
+        <p><strong>Status:</strong> {accident.status}</p>
       </div>
 
       <div className="section">
         <h3>Review Details</h3>
-        <div className="info-row">
+        {(accident.status === 'Line Manager Review' ||
+          accident.status === 'Branch Manager Review' ||
+          accident.status === 'QA Review') && (
+          <div className="review-card">
+            <textarea
+              value={comment}
+              onChange={handleCommentChange}
+              placeholder={`Enter ${accident.status.split(' ')[0]} Comment`}
+            />
+            <button onClick={handleSubmitComment}>Submit</button>
+          </div>
+        )}
+        <div className="review-card">
           <p><strong><FaComments /> Supervisor Comments:</strong> {accident.supervisorComments}</p>
-          <p><strong><FaUserCheck /> Line Manager Comments:</strong> {accident.lineManagerComments}</p>
-          <p><strong><FaUserCheck /> Factory Manager Comments:</strong> {accident.factoryManagerComments}</p>
-          <p><strong><FaUserCheck /> QA Comments:</strong> {accident.qaComments}</p>
-          <p><strong><FaComments /> Final Comments:</strong> {accident.finalComments}</p>
-          <p><strong>Status:</strong> {accident.status}</p>
-          <p><strong>Notify Management:</strong> {accident.notifyManagement ? 'Yes' : 'No'}</p>
-          <p><strong>Additional Notes:</strong> {accident.additionalNotes}</p>
         </div>
       </div>
 
@@ -90,7 +146,7 @@ const AccidentDetails = ({ accidentId }) => {
                 src={attachment}
                 alt={`Attachment ${index + 1}`}
                 className="attachment-image"
-                onClick={() => openImageModal(attachment)}
+                onClick={() => setSelectedImage(attachment)}
               />
             ))}
           </div>
@@ -98,7 +154,7 @@ const AccidentDetails = ({ accidentId }) => {
       )}
 
       {selectedImage && (
-        <div className="modal" onClick={closeImageModal}>
+        <div className="modal" onClick={() => setSelectedImage(null)}>
           <span className="close">&times;</span>
           <img className="modal-content" src={selectedImage} alt="Enlarged attachment" />
         </div>

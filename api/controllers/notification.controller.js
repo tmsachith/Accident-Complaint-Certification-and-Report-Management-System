@@ -3,17 +3,15 @@ import Notification from '../models/Notification.js';
 // Controller to create a new notification
 export const createNotification = async (req, res) => {
   try {
-    const { fullname, position, department } = req.body;  // Include department if needed
+    const { type, title, description } = req.body;
     const uniqueId = `notif_${Date.now()}`; // Generate a unique ID
 
     // Create a new notification with additional fields
     const newNotification = new Notification({
-      type: 'Signup Notification',  // Type of notification
-      title: 'Added new user',       // Title for the notification
-      description: `User ${fullname}, Position: ${position}, Department: ${department}`, // Detailed description
-      fullname,                      // User's full name
-      position,                      // User's position
-      uniqueId                       // Unique identifier
+      type,           // Type of notification
+      title,          // Title for the notification
+      description,    // Detailed description     // User's department
+      uniqueId        // Unique identifier
     });
 
     await newNotification.save();

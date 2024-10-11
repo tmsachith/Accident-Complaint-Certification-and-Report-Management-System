@@ -47,11 +47,16 @@ ul {
 }
 
 .status-indnotifi {
-  width: 0.625em;
-  height: 0.625em;
-  background-color: #ff0000;
+  width: 2em;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0.375em 0;
-  border-radius: 0.5em;
+}
+
+.icon {
+  font-size: 1.5em;
 }
 
 .text-wrapnotifi {
@@ -62,15 +67,22 @@ ul {
   flex-grow: 1;
 }
 
+.title {
+  font-weight: bold;
+  text-align: left;
+}
+
+.divider {
+  margin: 0.5em 0;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
 .time {
   font-size: 0.875em;
   color: #777;
-}
-
-.text-link {
-  font-weight: 500;
-  text-decoration: none;
-  color: black;
+  font-style: italic;
+  text-align: right;
 }
 
 .button-wrapnotifi {
@@ -87,16 +99,6 @@ ul {
   font-size: 15px;
   font-weight: 400;
   color: #666;
-  cursor: pointer;
-}
-
-.primary-ctanotifi {
-  font-size: 15px;
-  background-color: transparent;
-  font-weight: 600;
-  color: #1677ff;
-  border: none;
-  border-radius: 1.5em;
   cursor: pointer;
 }
 

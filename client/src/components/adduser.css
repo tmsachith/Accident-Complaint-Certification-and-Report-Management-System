@@ -296,3 +296,10 @@
   .success__close path {
     fill: #393A37;
   }
+
+
+  .toggle-password-icon {
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 18px;
+  }

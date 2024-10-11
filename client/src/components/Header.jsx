@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaBell } from 'react-icons/fa';
 import styled from 'styled-components';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios'; // Import axios for making API requests
 
 // Styled components for the header
 const HeaderWrapper = styled.header`
@@ -9,8 +10,8 @@ const HeaderWrapper = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background: linear-gradient(90deg, #6ab04c, #3b945e);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(270deg, #6ab04c, #3b945e);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increased vertical offset and blur */
 `;
 
 const Title = styled.div`
@@ -113,7 +114,7 @@ const Header = () => {
   const location = useLocation();
   const [username, setUsername] = useState(null);
   const [position, setPosition] = useState(null);
-  const [notificationCount, setNotificationCount] = useState(3); // Example notification count
+  const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -125,6 +126,20 @@ const Header = () => {
       setPosition(storedPosition);
     }
   }, [location.pathname, navigate]);
+
+  useEffect(() => {
+    // Fetch notifications from the backend
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get('/api/notifications');
+        setNotificationCount(response.data.length); // Set the notification count
+      } catch (error) {
+        console.error('Error fetching notifications', error);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
 
   const handleSignInClick = () => {
     navigate('/sign-in');

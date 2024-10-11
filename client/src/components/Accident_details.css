@@ -54,6 +54,29 @@ h2 {
   margin-right: 5px;
 }
 
+.status-card {
+  margin-bottom: 30px;
+  padding: 15px;
+  background-color: #f8d7da;
+  border-radius: 8px;
+  color: #721c24;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.review-card {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #e9ecef;
+  border-radius: 8px;
+  color: #495057;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
 .attachments-grid {
   display: flex;
   flex-wrap: wrap;
@@ -114,4 +137,19 @@ h2 {
   color: #bbb;
   text-decoration: none;
   cursor: pointer;
+}
+
+.alert {
+  margin: 20px 0;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+}
+
+.alert.success {
+  background-color: green;
+}
+
+.alert.error {
+  background-color: red;
 }

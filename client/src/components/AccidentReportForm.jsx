@@ -44,9 +44,22 @@ const AccidentReportForm = () => {
   const handleFileChange = (e) => {
     const files = e.target.files;
     const promises = [];
+    const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    const maxSize = 2 * 1024 * 1024; // 2 MB
 
     for (let i = 0; i < files.length; i++) {
-      promises.push(convertFileToBase64(files[i]));
+      const file = files[i];
+      if (!validTypes.includes(file.type)) {
+        setErrorMessage('Invalid file type. Only JPG, PNG, and GIF are allowed.');
+        showAlert('Invalid file type. Only JPG, PNG, and GIF are allowed.', 'Error');
+        return;
+      }
+      if (file.size > maxSize) {
+        setErrorMessage('File size exceeds 2 MB.');
+        showAlert('File size exceeds 2 MB.', 'Error');
+        return;
+      }
+      promises.push(convertFileToBase64(file));
     }
 
     Promise.all(promises).then(base64Files => {
@@ -175,6 +188,7 @@ const AccidentReportForm = () => {
       <div className="form-group">
         <label htmlFor="attachments">Attachments:</label>
         <input type="file" id="attachments" name="attachments" multiple onChange={handleFileChange} />
+        <small>Only JPG, PNG, and GIF files are allowed. Max size: 2 MB each.</small>
       </div>
       <div className="form-group">
         <label htmlFor="supervisorComments">Supervisor’s Comments:</label>

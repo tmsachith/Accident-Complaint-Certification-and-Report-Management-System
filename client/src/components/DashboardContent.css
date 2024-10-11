@@ -1,21 +1,22 @@
 .dashboard-content {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px; /* Reduced gap */
+  gap: 10px;
   justify-content: center;
+  
 }
 
 .card5 {
-  width: 220px; /* Keep original width */
-  height: 200px; /* Keep original height */
+  width: 220px;
+  height: 200px;
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   position: relative;
   overflow: hidden;
-  margin: 10px; /* Reduced margin */
+  margin: 10px;
   transition: transform 0.3s ease-in-out;
-  cursor: pointer; /* Added cursor pointer for better UX */
+  cursor: pointer;
 }
 
 .card5:before {
@@ -55,8 +56,8 @@
 }
 
 .card5-content {
-  width: 100%; /* Keep original width */
-  height: 100%; /* Keep original height */
+  width: 100%;
+  height: 100%;
   padding: 20px;
   text-align: center;
   color: rgb(0, 0, 0);
@@ -65,7 +66,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -45%); /* Adjusted to match initial state */
+  transform: translate(-50%, -45%);
   transition: all 0.3s ease-in-out;
   display: flex;
   justify-content: center;
@@ -74,24 +75,24 @@
 }
 
 .card5-content span {
-  font-size: 1.5rem; /* Keep original font size */
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 10px;
 }
 
 .card5-content p {
-  font-size: 0.9rem; /* Keep original font size */
+  font-size: 0.9rem;
   margin: 0;
 }
 
 .card5-content .fa-icon {
-  font-size: 3rem; /* Adjust icon size */
-  margin-bottom: 10px; /* Space between icon and title */
-  color: #444; /* Adjust icon color */
+  font-size: 3rem;
+  margin-bottom: 10px;
+  color: #444;
 }
 
 .card5:hover .card5-content {
-  transform: translate(-50%, -50%); /* Adjusted to match hover state */
+  transform: translate(-50%, -50%);
 }
 
 .notifications-list {
@@ -134,23 +135,21 @@
   color: #666;
 }
 
-/* Add this to your DashboardContent.css */
 .timer {
   width: 100%;
   text-align: center;
   font-size: 1.2rem;
   font-weight: bold;
-  margin-bottom: 20px; /* Add space below the timer */
+  margin-bottom: 20px;
   padding: 10px;
-  background-color: #f4f4f4; /* Light background for better visibility */
-  border-bottom: 1px solid #ddd; /* Border to separate from other content */
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #ddd;
 }
-
 
 .loading-spinner {
   margin: 20px auto;
-  border: 8px solid #f3f3f3; /* Light gray */
-  border-top: 8px solid #3498db; /* Blue */
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -168,5 +167,6 @@
   font-size: 1.5rem;
   font-weight: bold;
   color: #333;
-  margin-bottom: 20px; /* Space below the welcome message */
+  margin-bottom: 20px;
 }
+

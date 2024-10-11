@@ -1,13 +1,13 @@
 .sidebar {
   width: 250px;
   background-color: #002060;
+  background: linear-gradient(0deg, #6ab04c, #3b945e);
   color: white;
   padding: 1em;
-  border-radius: 0px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Ensure the logout is at the bottom */
+  justify-content: space-between;
 }
 
 .sidebar ul {
@@ -17,7 +17,7 @@
 
 .sidebar li {
   display: flex;
-  align-items: center; /* Align icons with text */
+  align-items: center;
   padding: 1em;
   margin: 0.5em 0;
   cursor: pointer;
@@ -31,9 +31,9 @@
 }
 
 .sidebar .icon {
-  margin-right: 0.75em; /* Add space between icon and text */
+  margin-right: 0.75em;
 }
 
 .sidebar .logout {
-  margin-top: auto; /* Pushes the logout to the bottom */
+  margin-top: auto;
 }

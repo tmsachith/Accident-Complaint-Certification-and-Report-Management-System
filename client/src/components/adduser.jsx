@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './adduser.css';
 
 export default function SignUp() {
@@ -23,6 +25,7 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -47,6 +50,8 @@ export default function SignUp() {
     e.preventDefault();
     setLoading(true);
 
+    const passwordRegex = /^(?=.*\d).{8,}$/;
+
     if (
       !formData.username || !formData.email || !formData.password || !formData.cpassword ||
       !formData.nic || !formData.fullname || !formData.position || !formData.phone ||
@@ -63,6 +68,12 @@ export default function SignUp() {
       return;
     }
 
+    if (!passwordRegex.test(formData.password)) {
+      setError('Password must be at least 8 characters long and include at least one number.');
+      setLoading(false);
+      return;
+    }
+
     try {
       await axios.post('/api/auth/signup', formData);
       setLoading(false);
@@ -71,8 +82,9 @@ export default function SignUp() {
 
       // Send notification data
       await axios.post('/api/notifications', {
-        fullname: formData.fullname,
-        position: formData.position
+        type: 'Signup Notification',
+        title: 'Added new user',
+        description: `User ${formData.fullname}, Position: ${formData.position}, Department: ${formData.department}`
       });
 
       // Show success alert instead of redirecting
@@ -82,6 +94,10 @@ export default function SignUp() {
       setLoading(false);
       setError(error.response?.data?.message || 'Registration failed');
     }
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -172,7 +188,6 @@ export default function SignUp() {
                   </select>
                 </div>
                 <div className="button-container">
-                 
                   <button type="button" className="button next" onClick={handleNext}>
                     Next <i className="icon-next"></i>
                   </button>
@@ -256,25 +271,31 @@ export default function SignUp() {
                   <label htmlFor="password" className="label"></label>
                   <input
                     id="password"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Password"
                     className="input"
                     required
                     value={formData.password}
                     onChange={handleChange}
                   />
+                  <span onClick={toggleShowPassword} className="toggle-password-icon">
+                    <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+                  </span>
                 </div>
                 <div className="field input-group">
                   <label htmlFor="cpassword" className="label"></label>
                   <input
                     id="cpassword"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Confirm Password"
                     className="input"
                     required
                     value={formData.cpassword}
                     onChange={handleChange}
                   />
+                  <span onClick={toggleShowPassword} className="toggle-password-icon">
+                    <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+                  </span>
                 </div>
                 <div className="button-container">
                   <button type="button" className="button previous" onClick={handlePrev}>

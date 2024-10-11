@@ -13,7 +13,10 @@ import Loader from './components/Loader';
 import NotificationPage from './pages/NotificationPage';
 import AddAccident from './pages/Addaccident';
 import Accidentshow from './pages/Accidentshow';
-import Settings from './pages/Settings'; // Import the Settings page
+import Settings from './pages/Settings';
+import CertificateChanges from './pages/CertificateChanges';
+import AnnouncementPage from './pages/AnnouncementPage';
+// import Report from './pages/Report'; // Import the Report page
 
 const AppContent = () => {
   const [loading, setLoading] = useState(false);
@@ -37,23 +40,26 @@ const AppContent = () => {
 
   return (
     <>
-      {loading && <Loader />} {/* Render Loader component when loading */}
+      {loading && <Loader />}
       {!loading && (
         <>
-          <Header /> {/* Render Header component */}
+          <Header />
           <Routes>
-            <Route path="/" element={<Home />} /> {/* Home route */}
-            <Route path="/sign-in" element={<SignIn />} /> {/* Sign-In route */}
-            <Route path="/sign-up" element={<SignUp />} /> {/* Sign-Up route */}
-            <Route path="/about" element={<About />} /> {/* About route */}
-            <Route path="/profile" element={<Profile />} /> {/* Profile route */}
-            <Route path="/dashboard" element={<Dashboard />} /> {/* Dashboard route */}
-            <Route path="/accidents" element={<Accidents />} /> {/* Accidents route */}
-            <Route path="/complaints" element={<Complaints />} /> {/* Complaints route */}
-            <Route path="/notifications" element={<NotificationPage />} /> {/* Notifications route */}
-            <Route path="/add-accident" element={<AddAccident />} /> {/* AddAccident route */}
-            <Route path="/accident-show/:id" element={<Accidentshow />} /> {/* Accidentshow route */}
-            <Route path="/settings" element={<Settings />} /> {/* Settings route */}
+            <Route path="/" element={<Home />} />
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/accidents" element={<Accidents />} />
+            <Route path="/complaints" element={<Complaints />} />
+            <Route path="/notifications" element={<NotificationPage />} />
+            <Route path="/add-accident" element={<AddAccident />} />
+            <Route path="/accident-show/:id" element={<Accidentshow />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/certificate-changes" element={<CertificateChanges />} />
+            <Route path="/announcements" element={<AnnouncementPage />} />
+            {/* <Route path="/report" element={<Report />} /> Report route */}
           </Routes>
         </>
       )}

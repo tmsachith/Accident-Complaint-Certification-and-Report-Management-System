@@ -27,7 +27,7 @@ h2 {
 
 .button-group {
   display: flex;
-  justify-content: space-between; /* Align buttons to the sides */
+  justify-content: space-between;
   margin-bottom: 20px;
 }
 
@@ -70,7 +70,6 @@ h2 {
   background-color: #3b945e;
 }
 
-
 .accident-list {
   display: flex;
   flex-direction: column;
@@ -91,18 +90,18 @@ h2 {
 }
 
 .line-manager {
-  background-color: rgb(230, 111, 111);
+  background-color: rgba(230, 111, 111, 0.505);
 }
 
 .accident-info {
   display: flex;
   align-items: center;
-  gap: 15px; /* Increase gap between image and text */
+  gap: 15px;
 }
 
 .accident-image {
-  width: 80px; /* Increase the width */
-  height: 80px; /* Increase the height */
+  width: 80px;
+  height: 80px;
   border-radius: 5px;
   object-fit: cover;
 }
@@ -110,7 +109,6 @@ h2 {
 .accident-details {
   display: flex;
   flex-direction: column;
-  
 }
 
 .accident-title {
@@ -123,16 +121,36 @@ h2 {
   color: #555;
   display: flex;
   align-items: center;
-  gap: 5px; /* Adjust gap to create some spacing between icons and text */
-  white-space: nowrap; /* Prevent wrapping onto a new line */
+  gap: 5px;
+  white-space: nowrap;
 }
-
 
 .accident-status {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
   font-size: 14px;
+}
+
+.status-text {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.additional-info {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: white;
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .status-dot {
@@ -177,7 +195,7 @@ h2 {
   max-width: 90%;
   width: 100%;
   position: relative;
-  overflow-y: auto; /* Enable scrolling */
+  overflow-y: auto;
   max-height: 90%;
 }
 
@@ -210,4 +228,18 @@ h2 {
   max-width: 100%;
   height: auto;
   border-radius: 5px;
+}
+
+.filter-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-section input[type="text"],
+.filter-section input[type="date"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
 }
