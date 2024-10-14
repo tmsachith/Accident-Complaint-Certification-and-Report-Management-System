@@ -1,5 +1,5 @@
 import express from 'express';
-import { createCertificateChange, getCertificateChanges, getCertificateChangeById } from '../controllers/certificateChange.controller.js';
+import { createCertificateChange, getCertificateChanges, getCertificateChangeById, updateCertificateChange } from '../controllers/certificateChange.controller.js';
 
 const router = express.Router();
 
@@ -11,5 +11,8 @@ router.get('/certificate-changes', getCertificateChanges);
 
 // Route to get a specific certificate change request by ID
 router.get('/certificate-changes/:id', getCertificateChangeById);
+
+router.put('/certificate-changes/:id', updateCertificateChange);
+
 
 export default router;

@@ -7,6 +7,7 @@ import complaintRouter from './routes/complaint.route.js'; // Import complaint r
 import notificationRouter from './routes/notification.route.js'; // Import notification router
 import accidentRouter from './routes/accident.route.js'; // Import accident router
 import certificateRouter from './routes/certificateChange.route.js';
+import emailRouter from './routes/email.route.js'; // Import email router
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -43,6 +44,7 @@ app.use('/api', complaintRouter); // Register complaint router
 app.use('/api', notificationRouter); // Register notification router
 app.use('/api', accidentRouter); // Register accident router
 app.use('/api', certificateRouter);
+app.use('/api', emailRouter); // Register email router
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -1,0 +1,94 @@
+.certificate-change-details-container {
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    width: 100%;
+  }
+  
+  .status-card {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .status-card.approved {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .status-card.rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .status-card.pending {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .loader, .error {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .error {
+    color: red;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  p {
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  
+  .description-text {
+    white-space: pre-wrap;
+  }
+  
+  .comment-box {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .approve-button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .reject-button {
+    padding: 10px 15px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .approve-button:disabled, .reject-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  

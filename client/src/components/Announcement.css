@@ -2,9 +2,10 @@
   flex-grow: 1;
   padding: 20px;
   background-color: #f9f9f9;
+  
 }
 .announcement-form {
-  max-width: 80%;
+  max-width: 100%;
   margin: 0 auto;
   padding: 20px;
   /* border: 1px solid #ccc; */

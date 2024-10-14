@@ -16,7 +16,7 @@ import Accidentshow from './pages/Accidentshow';
 import Settings from './pages/Settings';
 import CertificateChanges from './pages/CertificateChanges';
 import AnnouncementPage from './pages/AnnouncementPage';
-// import Report from './pages/Report'; // Import the Report page
+import CertificateChangeShow from './pages/CertificateChangeShow'; // Import the new page
 
 const AppContent = () => {
   const [loading, setLoading] = useState(false);
@@ -59,7 +59,7 @@ const AppContent = () => {
             <Route path="/settings" element={<Settings />} />
             <Route path="/certificate-changes" element={<CertificateChanges />} />
             <Route path="/announcements" element={<AnnouncementPage />} />
-            {/* <Route path="/report" element={<Report />} /> Report route */}
+            <Route path="/certificate-change-show/:id" element={<CertificateChangeShow />} /> {/* New route */}
           </Routes>
         </>
       )}

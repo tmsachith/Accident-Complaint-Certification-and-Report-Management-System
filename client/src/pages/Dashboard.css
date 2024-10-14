@@ -94,4 +94,7 @@
   display: flex;
   flex-grow: 1;
 }
-  
+
+.custom-font-class {
+  font-family: 'bindumathi', sans-serif;
+}

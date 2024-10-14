@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaMapMarkerAlt, FaUserTie, FaCheck } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaCertificate, FaUser, FaCalendarAlt  } from 'react-icons/fa';
 import './CertificateChange.css';
 
 const CertificateChange = () => {
@@ -16,7 +16,6 @@ const CertificateChange = () => {
     changeDescription: '',
     requestedBy: '',
     status: 'Pending Review',
-    reviewedBy: '',
     comments: '',
     notifyStakeholders: false,
   });
@@ -27,29 +26,35 @@ const CertificateChange = () => {
         setLoading(true);
         const response = await fetch('/api/certificate-changes');
         const data = await response.json();
-        setChanges(data);
+  
+        // Sort the changes array by createdAt (latest first)
+        const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  
+        setChanges(sortedData); // Set the sorted data
       } catch (error) {
         console.error('Error fetching changes:', error);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchChanges();
-
+  
     const storedUsername = localStorage.getItem('username');
     const storedPosition = localStorage.getItem('position');
     setUsername(storedUsername);
     setPosition(storedPosition);
-
+  
     if (storedPosition) {
       setFormData((prevData) => ({
         ...prevData,
         requestId: `REQ-${storedPosition}-${Date.now()}`,
-        requestedBy: storedUsername || '',
+        requestedBy: `${storedUsername} (${storedPosition})`,
       }));
     }
   }, []);
+  
+  
 
   const handleShowApproved = () => setShowApproved(true);
   const handleShowLineManager = () => setShowApproved(false);
@@ -72,7 +77,7 @@ const CertificateChange = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
         alert('Certificate change request submitted successfully');
         setShowModal(false);
@@ -97,11 +102,19 @@ const CertificateChange = () => {
         key={index}
         onClick={() => handleChangeClick(change)}
       >
+        <div className="change-icon">
+          <FaCertificate />
+        </div>
         <div className="change-info">
           <div className="change-details">
             <div className="change-title">{change.requestName}</div>
             <div className="change-location-department">
-              <FaMapMarkerAlt /> {change.requestedBy} | {new Date(change.changeDate).toLocaleDateString()}
+              <FaUser /> {change.requestedBy} | <FaCalendarAlt /> {new Date(change.changeDate).toLocaleDateString('en-US', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
             </div>
           </div>
         </div>
@@ -115,10 +128,10 @@ const CertificateChange = () => {
     ));
   };
 
-  // Filter changes based on tab selection
   const filteredChanges = showApproved
-    ? changes.filter((change) => change.status === 'Approved')
-    : changes.filter((change) => change.status === 'Pending Review');
+  ? changes.filter((change) => change.status === 'Approved' || change.status === 'Rejected') // Show both Approved and Rejected in the Closed tab
+  : changes.filter((change) => change.status === 'Pending Review');
+
 
   return (
     <div className="certificate-change">
@@ -141,7 +154,7 @@ const CertificateChange = () => {
       </div>
 
       {loading ? (
-        <div className="loader">Loading...</div>
+        <div className="loader"></div>
       ) : (
         <div className="change-list">
           {renderChangeList(filteredChanges)}
@@ -162,6 +175,7 @@ const CertificateChange = () => {
                   value={formData.requestId}
                   onChange={handleInputChange}
                   required
+                  disabled
                 />
               </label>
               <label>
@@ -200,35 +214,10 @@ const CertificateChange = () => {
                   name="requestedBy"
                   value={formData.requestedBy}
                   onChange={handleInputChange}
-                  required
+                  disabled
                 />
               </label>
-              <label>
-                Reviewed By:
-                <input
-                  type="text"
-                  name="reviewedBy"
-                  value={formData.reviewedBy}
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                Comments:
-                <textarea
-                  name="comments"
-                  value={formData.comments}
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                Notify Stakeholders:
-                <input
-                  type="checkbox"
-                  name="notifyStakeholders"
-                  checked={formData.notifyStakeholders}
-                  onChange={handleInputChange}
-                />
-              </label>
+              
               <div className="form-buttons">
                 <button type="submit">Submit Request</button>
                 <button type="button" onClick={handleModalClose}>Cancel</button>

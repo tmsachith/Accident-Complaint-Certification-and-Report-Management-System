@@ -161,12 +161,14 @@ const SupervisorAccident = () => {
       </div>
       
       {loading ? (
-        <div className="loader">Loading...</div>
-      ) : (
-        <div className="accident-list">
-          {renderAccidentList(filteredAccidents)}
-        </div>
-      )}
+  <div className="loader">
+    <div className="spinner"></div>
+  </div>
+) : (
+  <div className="accident-list">
+    {renderAccidentList(filteredAccidents)}
+  </div>
+)}
     </div>
   );
 };

@@ -58,7 +58,7 @@ export default function SignIn() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <label className="label">Email or Phone</label>
+            <label className="label">Email</label>
           </div>
           <div className="field">
             <input

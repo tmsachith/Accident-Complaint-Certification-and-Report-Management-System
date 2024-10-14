@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaMapMarkerAlt, FaUserTie, FaFileAlt, FaClock, FaComments, FaIdBadge } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaUserTie, FaFileAlt, FaClock, FaIdBadge } from 'react-icons/fa';
 import './Accident_details.css';
 
 const AccidentDetails = ({ accidentId }) => {
@@ -8,6 +8,7 @@ const AccidentDetails = ({ accidentId }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [comment, setComment] = useState('');
   const [alertMessage, setAlertMessage] = useState(null);
+  const [userPosition, setUserPosition] = useState('');
 
   useEffect(() => {
     const fetchAccidentDetails = async () => {
@@ -23,12 +24,17 @@ const AccidentDetails = ({ accidentId }) => {
       }
     };
 
+    const position = localStorage.getItem('position');
+    setUserPosition(position);
+
     fetchAccidentDetails();
   }, [accidentId]);
 
   const handleCommentChange = (e) => setComment(e.target.value);
 
   const handleSubmitComment = async () => {
+    if (!comment.trim()) return;
+
     let updatedStatus = accident.status;
     if (accident.status === 'Line Manager Review') {
       updatedStatus = 'Branch Manager Review';
@@ -51,10 +57,10 @@ const AccidentDetails = ({ accidentId }) => {
       });
 
       if (response.ok) {
-        const updatedAccident = await response.json();
-        setAccident(updatedAccident);
-        setComment('');
         setAlertMessage({ type: 'success', text: 'Update successful!' });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000); // Refresh page after 2 seconds
       } else {
         setAlertMessage({ type: 'error', text: 'Failed to update accident' });
       }
@@ -65,12 +71,25 @@ const AccidentDetails = ({ accidentId }) => {
   };
 
   if (loading) {
-    return <div className="loader">Loading...</div>;
+    return (
+      <div className="loader">
+        <div className="spinner"></div>
+      </div>
+    );
   }
 
   if (!accident) {
     return <div className="error">Accident not found</div>;
   }
+
+  const canSubmitComment = () => {
+    const { status } = accident;
+    return (
+      (status === 'Line Manager Review' && userPosition === 'Line Manager') ||
+      (status === 'Branch Manager Review' && userPosition === 'Branch Manager') ||
+      (status === 'QA Review' && userPosition === 'QA')
+    );
+  };
 
   return (
     <div className="accident-details-container">
@@ -119,20 +138,40 @@ const AccidentDetails = ({ accidentId }) => {
 
       <div className="section">
         <h3>Review Details</h3>
-        {(accident.status === 'Line Manager Review' ||
-          accident.status === 'Branch Manager Review' ||
-          accident.status === 'QA Review') && (
+        {canSubmitComment() && (
           <div className="review-card">
             <textarea
               value={comment}
               onChange={handleCommentChange}
               placeholder={`Enter ${accident.status.split(' ')[0]} Comment`}
             />
-            <button onClick={handleSubmitComment}>Submit</button>
+            <button onClick={handleSubmitComment} disabled={!comment.trim()}>
+              Submit
+            </button>
           </div>
         )}
-        <div className="review-card">
-          <p><strong><FaComments /> Supervisor Comments:</strong> {accident.supervisorComments}</p>
+
+        {accident.qaComments && (
+          <div className="comment-card">
+            <h4>QA Comments:</h4>
+            <p>{accident.qaComments}</p>
+          </div>
+        )}
+        {accident.branchManagerComments && (
+          <div className="comment-card">
+            <h4>Branch Manager Comments:</h4>
+            <p>{accident.branchManagerComments}</p>
+          </div>
+        )}
+        {accident.lineManagerComments && (
+          <div className="comment-card">
+            <h4>Line Manager Comments:</h4>
+            <p>{accident.lineManagerComments}</p>
+          </div>
+        )}
+        <div className="comment-card">
+          <h4>Supervisor Comments:</h4>
+          <p>{accident.supervisorComments}</p>
         </div>
       </div>
 
