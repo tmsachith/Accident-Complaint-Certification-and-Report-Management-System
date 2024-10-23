@@ -9,6 +9,7 @@ const AccidentDetails = ({ accidentId }) => {
   const [comment, setComment] = useState('');
   const [alertMessage, setAlertMessage] = useState(null);
   const [userPosition, setUserPosition] = useState('');
+  
 
   useEffect(() => {
     const fetchAccidentDetails = async () => {
@@ -182,7 +183,7 @@ const AccidentDetails = ({ accidentId }) => {
             {accident.attachments.map((attachment, index) => (
               <img
                 key={index}
-                src={attachment}
+                src={`http://localhost:5173/src/uploads/accidents/${accident.attachments[index]}`}
                 alt={`Attachment ${index + 1}`}
                 className="attachment-image"
                 onClick={() => setSelectedImage(attachment)}
@@ -195,7 +196,7 @@ const AccidentDetails = ({ accidentId }) => {
       {selectedImage && (
         <div className="modal" onClick={() => setSelectedImage(null)}>
           <span className="close">&times;</span>
-          <img className="modal-content" src={selectedImage} alt="Enlarged attachment" />
+          <img className="modal-content" src={`http://localhost:5173/src/uploads/accidents/${selectedImage}`} alt="Enlarged attachment" />
         </div>
       )}
     </div>

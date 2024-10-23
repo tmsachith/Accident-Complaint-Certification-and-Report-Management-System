@@ -1,13 +1,51 @@
+import multer from 'multer';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
 import Accident from '../models/Accident.js';
+
+// Get __filename and __dirname equivalent for ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Define storage configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const relativeDir = 'uploads/accidents/';  // Only this part will be stored in DB
+    const dir = path.join(__dirname, `../../client/src/${relativeDir}`);
+    
+    // Ensure the directory exists
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    cb(null, dir);  // Save the file in the full directory on disk
+  },
+  filename: (req, file, cb) => {
+    const filename = Date.now() + path.extname(file.originalname);
+    cb(null, filename);  // Use timestamp-based filename
+
+    // Save the relative directory and file name separately for database use
+    req.savedFileName = filename;  // Save only the file name (not the full path)
+  }
+});
+
+const upload = multer({ storage: storage });
 
 // Controller to create a new accident report
 export const createAccident = async (req, res) => {
   try {
-    const newAccident = new Accident(req.body);
+    const attachments = req.files.map(file => req.savedFileName); // Only save the file name (e.g., filename.jpg)
+    
+    const newAccident = new Accident({ 
+      ...req.body, 
+      attachments // Save array of filenames without the path
+    });
+    
     await newAccident.save();
+    
     res.status(201).json({ message: 'Accident report created successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error });
   }
 };
 
@@ -62,3 +100,5 @@ export const updateAccident = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export { upload };

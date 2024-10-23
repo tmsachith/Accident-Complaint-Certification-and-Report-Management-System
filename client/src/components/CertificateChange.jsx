@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaMapMarkerAlt, FaCertificate, FaUser, FaCalendarAlt  } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaCertificate, FaUser, FaCalendarAlt } from 'react-icons/fa';
 import './CertificateChange.css';
 
 const CertificateChange = () => {
@@ -9,6 +9,7 @@ const CertificateChange = () => {
   const [username, setUsername] = useState(null);
   const [position, setPosition] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [formData, setFormData] = useState({
     requestId: '',
     requestName: '',
@@ -27,10 +28,8 @@ const CertificateChange = () => {
         const response = await fetch('/api/certificate-changes');
         const data = await response.json();
   
-        // Sort the changes array by createdAt (latest first)
         const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  
-        setChanges(sortedData); // Set the sorted data
+        setChanges(sortedData);
       } catch (error) {
         console.error('Error fetching changes:', error);
       } finally {
@@ -54,8 +53,6 @@ const CertificateChange = () => {
     }
   }, []);
   
-  
-
   const handleShowApproved = () => setShowApproved(true);
   const handleShowLineManager = () => setShowApproved(false);
 
@@ -79,9 +76,12 @@ const CertificateChange = () => {
       });
 
       if (response.ok) {
-        alert('Certificate change request submitted successfully');
-        setShowModal(false);
-        await fetchChanges(); // Refresh the list after submission
+        // setShowModal(false);
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+          window.location.reload();
+        }, 3000); // Show alert for 3 seconds and then refresh
       } else {
         const responseText = await response.text();
         alert(`Failed to submit request: ${responseText}`);
@@ -129,12 +129,12 @@ const CertificateChange = () => {
   };
 
   const filteredChanges = showApproved
-  ? changes.filter((change) => change.status === 'Approved' || change.status === 'Rejected') // Show both Approved and Rejected in the Closed tab
-  : changes.filter((change) => change.status === 'Pending Review');
-
+    ? changes.filter((change) => change.status === 'Approved' || change.status === 'Rejected')
+    : changes.filter((change) => change.status === 'Pending Review');
 
   return (
     <div className="certificate-change">
+      
       <button className="add-request-button" onClick={handleAddChange}>
         Add Request
       </button>
@@ -164,6 +164,7 @@ const CertificateChange = () => {
       {showModal && (
         <div className="modal">
           <div className="modal-content">
+          {showAlert && <div className="alert-popup">Request submitted successfully!</div>}
             <span className="close" onClick={handleModalClose}>&times;</span>
             <h2>Request Special Standard Procedure Change</h2>
             <form onSubmit={handleSubmit}>

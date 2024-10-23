@@ -77,7 +77,7 @@ const SupervisorAccident = () => {
         <div className="accident-info">
           {Array.isArray(accident.attachments) && accident.attachments.length > 0 && (
             <img
-              src={accident.attachments[0]}
+              src={`http://localhost:5173/src/uploads/accidents/${accident.attachments[0]}`}
               alt="Attachment"
               className="accident-image"
             />
