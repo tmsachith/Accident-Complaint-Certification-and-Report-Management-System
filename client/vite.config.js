@@ -19,8 +19,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       external: [
-        '@fortawesome/free-solid-svg-icons' // Keep this as external if you're using it that way
-        // Removed 'react-transition-group' from external
+        // Removed '@fortawesome/free-solid-svg-icons' from external
       ],
     },
   },
