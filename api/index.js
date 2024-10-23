@@ -48,11 +48,11 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 // Register routers
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
-app.use('/api/complaint', complaintRouter); // Register complaint router
-app.use('/api/notification', notificationRouter); // Register notification router
-app.use('/api/accident', accidentRouter); // Register accident router
-app.use('/api/certificate', certificateRouter);
-app.use('/api/email', emailRouter); // Register email router
+app.use('/api', complaintRouter); // Register complaint router
+app.use('/api', notificationRouter); // Register notification router
+app.use('/api', accidentRouter); // Register accident router
+app.use('/api', certificateRouter);
+app.use('/api', emailRouter); // Register email router
 
 // Error handling middleware
 app.use((err, req, res, next) => {
