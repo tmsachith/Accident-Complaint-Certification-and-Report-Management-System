@@ -18,7 +18,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['@fortawesome/free-solid-svg-icons'],  // Externalizing the Font Awesome icons
+      external: ['@fortawesome/free-solid-svg-icons', 'react-transition-group'],  // Externalize both Font Awesome and React Transition Group
     },
   },
   plugins: [react()],
