@@ -90,8 +90,6 @@
   background-color: rgb(34, 177, 34);
 }
 
-
-
 .change-info {
   display: flex;
   align-items: center;
@@ -147,18 +145,13 @@
   background-color: rgb(0, 255, 0);
 }
 
-
-
 .rejected {
-  background-color: rgb(255, 99, 71); /* You can choose another color */
+  background-color: rgb(255, 99, 71);
 }
 
 .status-dot.rejected {
-  background-color: rgb(255, 69, 0); /* You can choose another color */
+  background-color: rgb(255, 69, 0);
 }
-
-
-
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
@@ -229,30 +222,29 @@
 form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
   width: 100%;
 }
 
 label {
   display: flex;
   flex-direction: column;
-  font-size: 14px;
+  font-size: 16px;
   width: 100%;
 }
 
 input, textarea {
-  padding: 15px;
+  padding: 20px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  font-size: 16px; /* Increased font size */
+  font-size: 18px;
   width: 100%;
   box-sizing: border-box;
-  
 }
 
 textarea {
   resize: vertical;
-  min-height: 120px; /* Adjusted min-height */
+  min-height: 150px;
 }
 
 .form-buttons {
@@ -266,9 +258,9 @@ button[type="button"] {
   background-color: #3498db;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 15px 25px;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
   width: 48%;
 }
@@ -278,3 +270,33 @@ button[type="button"]:hover {
   background-color: #2980b9;
 }
 
+.alert-message {
+  background-color: #4caf50;
+  color: white;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  border-radius: 5px;
+  animation: fadeInOut 3s forwards;
+}
+
+.alert-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #4caf50;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  z-index: 1000;
+  border-radius: 0 0 5px 5px;
+  animation: fadeInOut 3s forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}

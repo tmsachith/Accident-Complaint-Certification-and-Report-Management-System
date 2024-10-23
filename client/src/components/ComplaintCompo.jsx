@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FaCalendarAlt, FaMapMarkerAlt, FaTag, FaTimes, FaUser, FaBuilding, FaBarcode, FaWarehouse, FaMedkit, FaCommentDots, FaSave } from 'react-icons/fa';
+import { FaCalendarAlt, FaMapMarkerAlt, FaTag, FaTimes, FaUser, FaBuilding, FaBarcode, FaWarehouse, FaMedkit, FaCommentDots, FaSave, FaPlus } from 'react-icons/fa';
 import './ComplaintCompo.css';
 
 const ComplaintCompo = () => {
@@ -49,9 +49,16 @@ const ComplaintCompo = () => {
     }
   };
 
+  const handleAddComplaint = () => {
+    window.open('/add-complaint', '_blank');
+  };
+
   return (
     <div className="complaints-container" id="complaints-container">
       <h1 id="complaints-title">Complaints List</h1>
+      <button className="add-complaint-button" onClick={handleAddComplaint}>
+        <FaPlus /> Add Complaint
+      </button>
 
       {loading ? (
         <div className="loader" id="loader">

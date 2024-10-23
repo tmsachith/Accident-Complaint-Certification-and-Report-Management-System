@@ -219,3 +219,26 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.add-complaint-button {
+  background-color: #28a745;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.add-complaint-button svg {
+  margin-right: 5px;
+}
+
+.add-complaint-button:hover {
+  background-color: #218838;
+}

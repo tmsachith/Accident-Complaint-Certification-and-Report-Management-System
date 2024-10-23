@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  upload,
   createAccident,
   getAccidents,
   getAccidentById,
@@ -9,7 +10,7 @@ import {
 const router = express.Router();
 
 // Route to create a new accident
-router.post('/accidents', createAccident);
+router.post('/accidents', upload.array('attachments'), createAccident);
 
 // Route to get all accidents
 router.get('/accidents', getAccidents);

@@ -26,6 +26,7 @@ const AccidentReportForm = () => {
     additionalNotes: '',
   });
 
+  const [imagePreviews, setImagePreviews] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -42,48 +43,55 @@ const AccidentReportForm = () => {
   };
 
   const handleFileChange = (e) => {
-    const files = e.target.files;
-    const promises = [];
+    const files = Array.from(e.target.files);
     const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
     const maxSize = 2 * 1024 * 1024; // 2 MB
 
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      if (!validTypes.includes(file.type)) {
-        setErrorMessage('Invalid file type. Only JPG, PNG, and GIF are allowed.');
-        showAlert('Invalid file type. Only JPG, PNG, and GIF are allowed.', 'Error');
-        return;
-      }
-      if (file.size > maxSize) {
-        setErrorMessage('File size exceeds 2 MB.');
-        showAlert('File size exceeds 2 MB.', 'Error');
-        return;
-      }
-      promises.push(convertFileToBase64(file));
+    const validFiles = files.filter(file => validTypes.includes(file.type) && file.size <= maxSize);
+
+    if (validFiles.length !== files.length) {
+      setErrorMessage('Invalid file type or size. Only JPG, PNG, and GIF files under 2 MB are allowed.');
+      showAlert('Invalid file type or size. Only JPG, PNG, and GIF files under 2 MB are allowed.', 'Error');
+      return;
     }
 
-    Promise.all(promises).then(base64Files => {
-      setFormData({
-        ...formData,
-        attachments: base64Files,
-      });
+    setImagePreviews(validFiles.map(file => URL.createObjectURL(file)));
+    setFormData({
+      ...formData,
+      attachments: validFiles,
     });
   };
 
-  const convertFileToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
+  const handleRemoveImage = (index) => {
+    const newAttachments = formData.attachments.filter((_, i) => i !== index);
+    const newImagePreviews = imagePreviews.filter((_, i) => i !== index);
+
+    setFormData({
+      ...formData,
+      attachments: newAttachments,
     });
+    setImagePreviews(newImagePreviews);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formDataToSubmit = new FormData();
+    Object.keys(formData).forEach(key => {
+      if (key === 'attachments') {
+        formData.attachments.forEach(file => {
+          formDataToSubmit.append('attachments', file);
+        });
+      } else {
+        formDataToSubmit.append(key, formData[key]);
+      }
+    });
 
     try {
-      const response = await axios.post('/api/accidents', formData);
+      const response = await axios.post('/api/accidents', formDataToSubmit, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       if (response.status === 201) {
         setSuccessMessage('Accident report created successfully!');
@@ -111,6 +119,7 @@ const AccidentReportForm = () => {
           notifyManagement: false,
           additionalNotes: '',
         });
+        setImagePreviews([]);
       }
     } catch (error) {
       const serverErrorMessage = error.response?.data?.message || error.message || 'An unknown error occurred';
@@ -189,6 +198,14 @@ const AccidentReportForm = () => {
         <label htmlFor="attachments">Attachments:</label>
         <input type="file" id="attachments" name="attachments" multiple onChange={handleFileChange} />
         <small>Only JPG, PNG, and GIF files are allowed. Max size: 2 MB each.</small>
+        <div className="image-previews">
+          {imagePreviews.map((src, index) => (
+            <div key={index} className="preview-container">
+              <img src={src} alt="Preview" className="preview-image" />
+              <button type="button" className="remove-button" onClick={() => handleRemoveImage(index)}>×</button>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="form-group">
         <label htmlFor="supervisorComments">Supervisor’s Comments:</label>

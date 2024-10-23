@@ -11,6 +11,7 @@ const complaintSchema = new mongoose.Schema({
     expirationDate: Date,
     purchaseDate: Date,
     purchasePlace: String,
+    issueTitle: String,
     issueDescription: String,
     issueDate: Date,
     storageInfo: String,
