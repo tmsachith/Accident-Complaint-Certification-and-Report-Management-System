@@ -10,30 +10,18 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: process.env.VITE_API_URL || "https://gpsw.vercel.app", // Using the environment variable or fallback
+        target: process.env.VITE_API_URL || "https://gpsw.vercel.app",
         changeOrigin: true,
         secure: false,
       },
     },
   },
-  resolve: {
-    alias: {
-      '@fortawesome/free-solid-svg-icons': resolve(__dirname, 'node_modules/@fortawesome/free-solid-svg-icons'),
-      'react-transition-group': resolve(__dirname, 'node_modules/react-transition-group'),
-    },
-  },
   build: {
     rollupOptions: {
       external: [
-        '@fortawesome/free-solid-svg-icons', 
-        'react-transition-group'
-      ], // Externalize dependencies
-      output: {
-        globals: {
-          'react': 'React',
-          'react-dom': 'ReactDOM',
-        },
-      },
+        '@fortawesome/free-solid-svg-icons' // Keep this as external if you're using it that way
+        // Removed 'react-transition-group' from external
+      ],
     },
   },
   plugins: [react()],
