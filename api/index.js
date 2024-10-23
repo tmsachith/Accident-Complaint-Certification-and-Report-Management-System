@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
 import complaintRouter from './routes/complaint.route.js'; // Import complaint router
@@ -13,6 +14,13 @@ dotenv.config(); // Load environment variables from .env file
 
 const app = express();
 app.use(express.json());
+
+// Enable CORS for all routes
+app.use(cors({
+  origin: 'https://bio-foods.vercel.app/', // Your frontend URL
+  credentials: true,
+}));
+
 const PORT = process.env.PORT || 5000; // Use PORT from environment variables or default to 5000
 
 // MongoDB connection string from environment variables
@@ -40,11 +48,11 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 // Register routers
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
-app.use('/api', complaintRouter); // Register complaint router
-app.use('/api', notificationRouter); // Register notification router
-app.use('/api', accidentRouter); // Register accident router
-app.use('/api', certificateRouter);
-app.use('/api', emailRouter); // Register email router
+app.use('/api/complaint', complaintRouter); // Register complaint router
+app.use('/api/notification', notificationRouter); // Register notification router
+app.use('/api/accident', accidentRouter); // Register accident router
+app.use('/api/certificate', certificateRouter);
+app.use('/api/email', emailRouter); // Register email router
 
 // Error handling middleware
 app.use((err, req, res, next) => {
