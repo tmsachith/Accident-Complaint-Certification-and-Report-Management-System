@@ -16,9 +16,24 @@ export default defineConfig({
       },
     },
   },
+  resolve: {
+    alias: {
+      '@fortawesome/free-solid-svg-icons': resolve(__dirname, 'node_modules/@fortawesome/free-solid-svg-icons'),
+      'react-transition-group': resolve(__dirname, 'node_modules/react-transition-group'),
+    },
+  },
   build: {
     rollupOptions: {
-      external: ['@fortawesome/free-solid-svg-icons', 'react-transition-group'],  // Externalize both Font Awesome and React Transition Group
+      external: [
+        '@fortawesome/free-solid-svg-icons', 
+        'react-transition-group'
+      ], // Externalize dependencies
+      output: {
+        globals: {
+          'react': 'React',
+          'react-dom': 'ReactDOM',
+        },
+      },
     },
   },
   plugins: [react()],
