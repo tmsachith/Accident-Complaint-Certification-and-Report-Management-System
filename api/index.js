@@ -1,7 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import cors from 'cors';
 import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
 import complaintRouter from './routes/complaint.route.js'; // Import complaint router
@@ -14,13 +13,6 @@ dotenv.config(); // Load environment variables from .env file
 
 const app = express();
 app.use(express.json());
-
-// Enable CORS for all routes
-app.use(cors({
-  origin: 'https://bio-foods.vercel.app/', // Your frontend URL
-  credentials: true,
-}));
-
 const PORT = process.env.PORT || 5000; // Use PORT from environment variables or default to 5000
 
 // MongoDB connection string from environment variables
