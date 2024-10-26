@@ -18,7 +18,9 @@ const complaintSchema = new mongoose.Schema({
     healthEffects: String,
     desiredResolution: String,
     additionalComments: String,
-    reviewerNote: String  // New field added
+    reviewerNote: String, // New field added
+    attachments: [String], // Array of attachment filenames
+    status: { type: String, default: "Pending" } // New status field with default value "Pending"
 }, { timestamps: true });
 
 const Complaint = mongoose.model('Complaint', complaintSchema);

@@ -16,7 +16,10 @@ import Accidentshow from './pages/Accidentshow';
 import Settings from './pages/Settings';
 import CertificateChanges from './pages/CertificateChanges';
 import AnnouncementPage from './pages/AnnouncementPage';
-import CertificateChangeShow from './pages/CertificateChangeShow'; // Import the new page
+import CertificateChangeShow from './pages/CertificateChangeShow';
+import Report from './pages/Report';
+import AddComplaint from './pages/AddComplaint';
+import ComplaintDetailsShow from './pages/ComplaintDetailsShow'; // Import the component
 
 const AppContent = () => {
   const [loading, setLoading] = useState(false);
@@ -59,7 +62,10 @@ const AppContent = () => {
             <Route path="/settings" element={<Settings />} />
             <Route path="/certificate-changes" element={<CertificateChanges />} />
             <Route path="/announcements" element={<AnnouncementPage />} />
-            <Route path="/certificate-change-show/:id" element={<CertificateChangeShow />} /> {/* New route */}
+            <Route path="/certificate-change-show/:id" element={<CertificateChangeShow />} />
+            <Route path="/report" element={<Report />} />
+            <Route path="/add-complaint" element={<AddComplaint />} />
+            <Route path="/complaint-details/:id" element={<ComplaintDetailsShow />} /> {/* New route */}
           </Routes>
         </>
       )}

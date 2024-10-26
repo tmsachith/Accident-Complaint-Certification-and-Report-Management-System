@@ -1,12 +1,11 @@
 import express from 'express';
-import { getComplaints, updateReviewerNote } from '../controllers/complaint.controller.js';
+import { getComplaints, updateReviewerNote, addComplaint, upload, getComplaintById } from '../controllers/complaint.controller.js';
 
 const router = express.Router();
 
-// Route to get all complaints
 router.get('/complaints', getComplaints);
-
-// New route to update reviewer note
+router.get('/complaints/:id', getComplaintById); // Get complaint by ID
 router.post('/complaints/reviewer-note', updateReviewerNote);
+router.post('/complaints', upload.array('attachments'), addComplaint);
 
 export default router;
