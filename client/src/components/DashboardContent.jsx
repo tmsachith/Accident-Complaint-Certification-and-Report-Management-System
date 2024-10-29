@@ -14,6 +14,7 @@ const DashboardContent = () => {
   const [position, setPosition] = useState(null);
   const [pendingCertificateCount, setPendingCertificateCount] = useState(0);
   const [approvalAccidentCount, setApprovalAccidentCount] = useState(0);
+  const [pendingcomplaintCount, setPendingcomplaintCount] = useState(0);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -54,6 +55,18 @@ const DashboardContent = () => {
     }
   };
 
+  const fetchcomplaint = async () => {
+    try {
+      const response = await axios.get('/api/complaints');
+      const complaints = response.data;
+
+      const pendingcomplaint = complaints.filter(change => change.status === 'Pending');
+      setPendingcomplaintCount(pendingcomplaint.length);
+    } catch (error) {
+      console.error('Error fetching complaint:', error);
+    }
+  };
+
   const fetchAccidents = async () => {
     try {
       const response = await axios.get('/api/accidents');
@@ -80,6 +93,7 @@ const DashboardContent = () => {
     fetchNotifications();
     fetchCertificateChanges();
     fetchAccidents();
+    fetchcomplaint();
   }, [position]);
 
   useEffect(() => {
@@ -91,7 +105,7 @@ const DashboardContent = () => {
   }, []);
 
   const cardData = [
-    { title: "Complaints", route: "/complaints", notificationCount: 5, icon: faExclamationTriangle },
+    { title: "Complaints", route: "/complaints", notificationCount: pendingcomplaintCount, icon: faExclamationTriangle },
     { title: "Accidents", route: "/accidents", notificationCount: approvalAccidentCount, icon: faPersonFallingBurst },
     { title: "Certificate Changes", route: "/certificate-changes", notificationCount: pendingCertificateCount, icon: faCertificate },
     { title: "Reports", route: "/report", notificationCount: '', icon: faFileAlt },

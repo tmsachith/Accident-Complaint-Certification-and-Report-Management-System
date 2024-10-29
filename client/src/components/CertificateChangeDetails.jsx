@@ -28,7 +28,6 @@ const CertificateChangeDetails = ({ changeId }) => {
     fetchCertificateChange();
   }, [changeId]);
 
-  // Function to handle updating status (approve/reject) and saving comments
   const handleUpdate = async (newStatus) => {
     setSaving(true);
     try {
@@ -68,42 +67,47 @@ const CertificateChangeDetails = ({ changeId }) => {
 
   return (
     <div className="certificate-change-details-container">
-      {/* Status at the top */}
+      <div className="info-card">
+        <p><strong>Requested By:</strong> {certificateChange.requestedBy}</p>
+        <p className="request-id">{certificateChange.requestId}</p>
+      </div>
+
+      <div className="info-card">
+        <p><strong>Change Date:</strong> {new Date(certificateChange.changeDate).toLocaleDateString()}</p>
+      </div>
+
+      <div className="info-card">
+        <h2>{certificateChange.requestName}</h2>
+      </div>
+
+      <div className="description-card">
+        <p><strong>Description:</strong></p>
+        <pre className="description-text">
+          {certificateChange.changeDescription.split('\n').map((line, index) => (
+            <span key={index}>
+              {line.split(' ').map((word, i) =>
+                word.startsWith('http') ? (
+                  <a key={i} href={word} target="_blank" rel="noopener noreferrer">{word}</a>
+                ) : (
+                  <span key={i}>{word} </span>
+                )
+              )}
+              <br />
+            </span>
+          ))}
+        </pre>
+      </div>
+
       <div className={`status-card ${certificateChange.status === 'Approved' ? 'approved' : certificateChange.status === 'Rejected' ? 'rejected' : 'pending'}`}>
         Status: {certificateChange.status}
       </div>
-      
-      <h2>Certificate Change Details</h2>
-      <p><strong>Request ID:</strong> {certificateChange.requestId}</p>
-      <p><strong>Request Name:</strong> {certificateChange.requestName}</p>
-      <p><strong>Change Date:</strong> {new Date(certificateChange.changeDate).toLocaleDateString()}</p>
-      
-      {/* Description with clickable links and new line preservation */}
-      <p><strong>Description:</strong></p>
-      <pre className="description-text">
-        {certificateChange.changeDescription.split('\n').map((line, index) => (
-          <span key={index}>
-            {line.split(' ').map((word, i) =>
-              word.startsWith('http') ? (
-                <a key={i} href={word} target="_blank" rel="noopener noreferrer">{word}</a>
-              ) : (
-                <span key={i}>{word} </span>
-              )
-            )}
-            <br />
-          </span>
-        ))}
-      </pre>
-      
-      <p><strong>Requested By:</strong> {certificateChange.requestedBy}</p>
-      <p><strong>Notify Stakeholders:</strong> {certificateChange.notifyStakeholders ? 'Yes' : 'No'}</p>
 
-      {/* Show comments only if status is 'Approved' or 'Rejected' */}
       {['Approved', 'Rejected'].includes(certificateChange.status) && (
-        <p><strong>Comments:</strong> {certificateChange.comments || 'None'}</p>
+        <div className="info-card">
+          <p><strong>Comments:</strong> {certificateChange.comments || 'None'}</p>
+        </div>
       )}
 
-      {/* Field to add comment and approve/reject the request */}
       {certificateChange.status === 'Pending Review' && (
         <>
           <textarea
@@ -113,10 +117,18 @@ const CertificateChangeDetails = ({ changeId }) => {
             className="comment-box"
           />
           <div className="action-buttons">
-            <button onClick={() => handleUpdate('Approved')} disabled={saving} className="approve-button">
+            <button
+              onClick={() => handleUpdate('Approved')}
+              disabled={saving || !comment.trim()}
+              className="approve-button"
+            >
               {saving ? 'Saving...' : 'Approve'}
             </button>
-            <button onClick={() => handleUpdate('Rejected')} disabled={saving} className="reject-button">
+            <button
+              onClick={() => handleUpdate('Rejected')}
+              disabled={saving || !comment.trim()}
+              className="reject-button"
+            >
               {saving ? 'Saving...' : 'Reject'}
             </button>
           </div>

@@ -105,7 +105,7 @@ const AddComplaint = () => {
         <div className="form-step">
           <h2>Customer Details</h2>
           <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" required />
-          <input type="text" name="contactInfo" value={formData.contactInfo} onChange={handleChange} placeholder="Email" required />
+          <input type="text" name="email" value={formData.contactInfo} onChange={handleChange} placeholder="Email" required />
           <input type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Address" />
           <button type="button" onClick={nextStep}>Next</button>
         </div>

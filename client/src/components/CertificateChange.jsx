@@ -180,7 +180,7 @@ const CertificateChange = () => {
                 />
               </label>
               <label>
-                Request Name:
+                Request Title:
                 <input
                   type="text"
                   name="requestName"

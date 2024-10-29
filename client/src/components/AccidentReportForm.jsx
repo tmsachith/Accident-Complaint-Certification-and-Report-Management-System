@@ -1,6 +1,28 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 import './AccidentReportForm.css';
+
+const Suggestions = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: #fff;
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+`;
+
+const SuggestionItem = styled.li`
+  padding: 8px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
 
 const AccidentReportForm = () => {
   const [formData, setFormData] = useState({
@@ -24,14 +46,26 @@ const AccidentReportForm = () => {
     status: 'Line Manager Review',
     notifyManagement: false,
     additionalNotes: '',
+    riskLevel: 'Low',
   });
 
   const [imagePreviews, setImagePreviews] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [employeeSuggestions, setEmployeeSuggestions] = useState([]);
+  const [employees] = useState([
+    { id: 'E001', name: 'Kumara Ekanayake', department: 'HR', position: 'Manager', location: 'Makadura' },
+    { id: 'E002', name: 'Tharindu Gamage', department: 'IT', position: 'Developer', location: 'Pannampitiya' },
+    { id: 'E003', name: 'Badara Wijekoon', department: 'Finance', position: 'Analyst', location: 'Gampola' },
+    { id: 'E004', name: 'WD Kumara', department: 'Marketing', position: 'Coordinator', location: 'DIyathalawa' },
+  ]);
 
-  const showAlert = (message, type) => {
-    alert(`${type}: ${message}`);
+  const locationEmails = {
+    Makadura: 'ravi2001730@gmail.com',
+    Pannampitiya: 'sachith.icc@gmail.com',
+    Gampola: 'gamagedamiru@gmail.com',
+    DIyathalawa: 'cristonhimasha73@gmail.com',
   };
 
   const handleChange = (e) => {
@@ -39,6 +73,31 @@ const AccidentReportForm = () => {
     setFormData({
       ...formData,
       [name]: type === 'checkbox' ? checked : value,
+    });
+
+    if (name === 'employeeId') {
+      const matches = employees.filter(emp => emp.id.toLowerCase().includes(value.toLowerCase()));
+      setEmployeeSuggestions(matches);
+    }
+  };
+
+  const handleEmployeeSelect = (employee) => {
+    setFormData({
+      ...formData,
+      employeeId: employee.id,
+      employeeName: employee.name,
+      department: employee.department,
+      position: employee.position,
+      accidentLocation: employee.location,
+    });
+    setEmployeeSuggestions([]);
+  };
+
+  const handleRiskToggle = () => {
+    setFormData({
+      ...formData,
+      riskLevel: formData.riskLevel === 'Low' ? 'High' : 'Low',
+      notifyManagement: formData.riskLevel === 'Low',
     });
   };
 
@@ -51,7 +110,6 @@ const AccidentReportForm = () => {
 
     if (validFiles.length !== files.length) {
       setErrorMessage('Invalid file type or size. Only JPG, PNG, and GIF files under 2 MB are allowed.');
-      showAlert('Invalid file type or size. Only JPG, PNG, and GIF files under 2 MB are allowed.', 'Error');
       return;
     }
 
@@ -75,6 +133,19 @@ const AccidentReportForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    if (formData.riskLevel === 'High') {
+      const email = locationEmails[formData.accidentLocation];
+      if (email) {
+        await axios.post('/api/send-email', {
+          to: email,
+          subject: 'High Risk Accident Notification',
+          text: `A high risk accident has been reported at ${formData.accidentLocation}. Please review the details.`,
+        });
+      }
+    }
+
     const formDataToSubmit = new FormData();
     Object.keys(formData).forEach(key => {
       if (key === 'attachments') {
@@ -96,7 +167,6 @@ const AccidentReportForm = () => {
       if (response.status === 201) {
         setSuccessMessage('Accident report created successfully!');
         setErrorMessage('');
-        showAlert('Accident report created successfully!', 'Success');
         setFormData({
           employeeId: '',
           employeeName: '',
@@ -118,25 +188,43 @@ const AccidentReportForm = () => {
           status: 'Line Manager Review',
           notifyManagement: false,
           additionalNotes: '',
+          riskLevel: 'Low',
         });
         setImagePreviews([]);
       }
     } catch (error) {
       const serverErrorMessage = error.response?.data?.message || error.message || 'An unknown error occurred';
       setErrorMessage(`Failed to create accident report: ${serverErrorMessage}`);
-      showAlert(`Failed to create accident report: ${serverErrorMessage}`, 'Error');
-      setSuccessMessage('');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <form className="accident-report-form" onSubmit={handleSubmit}>
       <h2>Accident Report Form</h2>
-      {successMessage && <p className="success-message">{successMessage}</p>}
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <div className="form-group">
+      {successMessage && <p className="alert success">{successMessage}</p>}
+      {errorMessage && <p className="alert error">{errorMessage}</p>}
+      <div className="form-group" style={{ position: 'relative' }}>
         <label htmlFor="employeeId">Employee ID:</label>
-        <input type="text" id="employeeId" name="employeeId" value={formData.employeeId} onChange={handleChange} required />
+        <input
+          type="text"
+          id="employeeId"
+          name="employeeId"
+          value={formData.employeeId}
+          onChange={handleChange}
+          required
+          autoComplete="off"
+        />
+        {employeeSuggestions.length > 0 && (
+          <Suggestions>
+            {employeeSuggestions.map((emp) => (
+              <SuggestionItem key={emp.id} onClick={() => handleEmployeeSelect(emp)}>
+                {emp.id} - {emp.name}
+              </SuggestionItem>
+            ))}
+          </Suggestions>
+        )}
       </div>
       <div className="form-group">
         <label htmlFor="employeeName">Employee Name:</label>
@@ -165,6 +253,12 @@ const AccidentReportForm = () => {
       <div className="form-group">
         <label htmlFor="description">Accident Description:</label>
         <textarea id="description" name="description" value={formData.description} onChange={handleChange} required />
+      </div>
+      <div className="form-group">
+        <label>Risk Level:</label>
+        <button type="button" onClick={handleRiskToggle}>
+          {formData.riskLevel === 'Low' ? 'Switch to High Risk' : 'Switch to Low Risk'}
+        </button>
       </div>
       <div className="form-group">
         <label htmlFor="injuryType">Injury Type:</label>
@@ -220,9 +314,12 @@ const AccidentReportForm = () => {
         </select>
       </div>
       <div className="form-buttons">
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Submitting...' : 'Submit'}
+        </button>
         <button type="button" onClick={() => setFormData({ ...formData, status: 'Draft' })}>Save as Draft</button>
       </div>
+      {loading && <div className="loading-spinner"></div>}
     </form>
   );
 };

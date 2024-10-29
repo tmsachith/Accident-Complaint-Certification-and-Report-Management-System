@@ -3,13 +3,13 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .button-group {
+}
+
+.button-group {
     margin-bottom: 20px;
-  }
-  
-  .button-group button {
+}
+
+.button-group button {
     margin-right: 10px;
     padding: 12px 24px;
     background-color: #007bff;
@@ -19,8 +19,9 @@
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
-  }
-  
-  .button-group button:hover {
+}
+
+.button-group button:hover,
+.button-group button.active {
     background-color: #0056b3;
-  }
+}
