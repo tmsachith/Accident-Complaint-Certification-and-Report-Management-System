@@ -10,7 +10,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: process.env.VITE_API_URL || "https://gpsw.vercel.app", // Ensure no trailing slash
+        target: process.env.BACKEND_API_URL || "http://localhost:5000/", // Ensure no trailing slash
         changeOrigin: true,
         secure: false,
       },

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,7 +25,28 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showSuccess2, setShowSuccess2] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const generatedPassword = generateRandomPassword();
+    setFormData((prevData) => ({
+      ...prevData,
+      password: generatedPassword,
+      cpassword: generatedPassword,
+    }));
+  }, []);
+
+  const generateRandomPassword = () => {
+    const length = 10;
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let password = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      password += charset[randomIndex];
+    }
+    return password;
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -46,11 +67,13 @@ export default function SignUp() {
     setShowSuccess(false);
   };
 
+  const handleCloseSuccess2 = () => {
+    setShowSuccess2(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    const passwordRegex = /^(?=.*\d).{8,}$/;
 
     if (
       !formData.username || !formData.email || !formData.password || !formData.cpassword ||
@@ -68,28 +91,31 @@ export default function SignUp() {
       return;
     }
 
-    if (!passwordRegex.test(formData.password)) {
-      setError('Password must be at least 8 characters long and include at least one number.');
-      setLoading(false);
-      return;
-    }
-
     try {
-      await axios.post('/api/auth/signup', formData);
-      setLoading(false);
-      setError('');
       setShowSuccess(true);
+      await axios.post('/api/auth/signup', formData);
 
-      // Send notification data
+      setError('');
+
+      await axios.post('/api/send-email', {
+        to: formData.email,
+        subject: 'Welcome to Our Service',
+        text: `Hello ${formData.fullname},\n\nYour account has been created successfully!\nEmail: ${formData.email}\nPassword: ${formData.password}\n\nPlease keep this information secure.`
+      });
+
       await axios.post('/api/notifications', {
         type: 'Signup Notification',
         title: 'Added new user',
         description: `User ${formData.fullname}, Position: ${formData.position}, Department: ${formData.department}`
       });
 
-      // Show success alert instead of redirecting
-      alert('User has been successfully added!');
-      
+      setShowSuccess2(true);
+      setLoading(false);
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+
     } catch (error) {
       setLoading(false);
       setError(error.response?.data?.message || 'Registration failed');
@@ -315,8 +341,18 @@ export default function SignUp() {
           <div className="success__icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none"><path fillRule="evenodd" fill="#393a37" d="m12 1c-6.075 0-11 4.925-11 11s4.925 11 11 11 11-4.925 11-11-4.925-11-11-11zm4.768 9.14c.0878-.1004.1546-.21726.1966-.34383.0419-.12657.0581-.26026.0477-.39319-.0105-.13293-.0475-.26242-.1087-.38085-.0613-.11844-.1456-.22342-.2481-.30879-.1024-.08536-.2209-.14938-.3484-.18828s-.2616-.0519-.3942-.03823c-.1327.01366-.2612.05372-.3782.1178-.1169.06409-.2198.15091-.3027.25537l-4.3 5.159-2.225-2.226c-.1886-.1822-.4412-.283-.7034-.2807s-.51301.1075-.69842.2929-.29058.4362-.29285.6984c-.00228.2622.09851.5148.28067.7034l3 3c.0983.0982.2159.1748.3454.2251.1295.0502.2681.0729.4069.0665.1387-.0063.2747-.0414.3991-.1032.1244-.0617.2347-.1487.3236-.2554z" clipRule="evenodd"></path></svg>
           </div>
-          <div className="success__title">Signup successful!</div>
+          <div className="success__title">Account Creating...</div>
           <div className="success__close" onClick={handleCloseSuccess}><svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 20 20" height="20"><path fill="#393A37" d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"></path></svg></div>
+        </div>
+      )}
+
+      {showSuccess2 && (
+        <div className="success">
+          <div className="success__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none"><path fillRule="evenodd" fill="#393a37" d="m12 1c-6.075 0-11 4.925-11 11s4.925 11 11 11 11-4.925 11-11-4.925-11-11-11zm4.768 9.14c.0878-.1004.1546-.21726.1966-.34383.0419-.12657.0581-.26026.0477-.39319-.0105-.13293-.0475-.26242-.1087-.38085-.0613-.11844-.1456-.22342-.2481-.30879-.1024-.08536-.2209-.14938-.3484-.18828s-.2616-.0519-.3942-.03823c-.1327.01366-.2612.05372-.3782.1178-.1169.06409-.2198.15091-.3027.25537l-4.3 5.159-2.225-2.226c-.1886-.1822-.4412-.283-.7034-.2807s-.51301.1075-.69842.2929-.29058.4362-.29285.6984c-.00228.2622.09851.5148.28067.7034l3 3c.0983.0982.2159.1748.3454.2251.1295.0502.2681.0729.4069.0665.1387-.0063.2747-.0414.3991-.1032.1244-.0617.2347-.1487.3236-.2554z" clipRule="evenodd"></path></svg>
+          </div>
+          <div className="success__title">Signup successful!</div>
+          <div className="success__close" onClick={handleCloseSuccess2}><svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 20 20" height="20"><path fill="#393A37" d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z"></path></svg></div>
         </div>
       )}
       {error && <p className="error-text">{error}</p>}

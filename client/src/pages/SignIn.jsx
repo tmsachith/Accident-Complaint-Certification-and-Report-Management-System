@@ -33,7 +33,7 @@ export default function SignIn() {
       localStorage.setItem('token', token);
       localStorage.setItem('username', username);
       localStorage.setItem('position', position);
-      localStorage.setItem('email', email); // Save email to localStorage
+      localStorage.setItem('email', email);
 
       dispatch(signInSuccess(response.data));
       navigate('/dashboard', { state: { username, position } });
@@ -46,7 +46,7 @@ export default function SignIn() {
 
   return (
     <div className="sign-in-container">
-      <div className={`alert ${showAlert ? 'show' : ''}`}>{error}</div>
+      <div className={`alertsign ${showAlert ? 'show' : ''}`}>{error}</div>
       <div className="content">
         <div className="text">Login</div>
         <form onSubmit={handleSubmit}>

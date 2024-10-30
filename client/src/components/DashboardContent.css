@@ -45,7 +45,7 @@
   right: 10px;
   background-color: red;
   color: white;
-  border-radius: 50%;
+  border-radius: 20px;
   padding: 5px 10px;
   font-size: 0.8rem;
   font-weight: bold;
@@ -53,6 +53,26 @@
   justify-content: center;
   align-items: center;
   z-index: 2;
+  transition: width 0.3s ease, padding 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  width: auto;
+  max-width: none; /* Ensures only count is visible initially */
+}
+
+.card5:hover .notification-badge {
+  max-width: none; /* Expands to fit full text on hover */
+  padding: 5px 15px;
+}
+
+.notification-badge span:before {
+  content: "";
+  margin-right: 5px;
+  transition: content 0.3s ease;
+}
+
+.card5:hover .notification-badge span:before {
+  content: "Pending: ";
 }
 
 .card5-content {
