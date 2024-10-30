@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors'; // Import CORS package
 import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
 import complaintRouter from './routes/complaint.route.js'; // Import complaint router
@@ -17,6 +18,13 @@ const PORT = process.env.PORT || 5000; // Use PORT from environment variables or
 
 // MongoDB connection string from environment variables
 const mongoURI = process.env.MONGODB_URI;
+
+// Configure CORS with specific origin
+app.use(cors({
+  origin: 'https://sprightly-faun-96b556.netlify.app', // Netlify frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
 
 if (!mongoURI) {
   console.error('Error: MONGODB_URI is not defined in environment variables');
