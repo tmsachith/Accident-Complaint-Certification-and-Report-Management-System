@@ -1,21 +1,29 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors'; // Import cors
 import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
-import complaintRouter from './routes/complaint.route.js'; // Import complaint router
-import notificationRouter from './routes/notification.route.js'; // Import notification router
-import accidentRouter from './routes/accident.route.js'; // Import accident router
+import complaintRouter from './routes/complaint.route.js';
+import notificationRouter from './routes/notification.route.js';
+import accidentRouter from './routes/accident.route.js';
 import certificateRouter from './routes/certificateChange.route.js';
-import emailRouter from './routes/email.route.js'; // Import email router
+import emailRouter from './routes/email.route.js';
 
-dotenv.config(); // Load environment variables from .env file
+dotenv.config();
 
 const app = express();
 app.use(express.json());
-const PORT = process.env.PORT || 5000; // Use PORT from environment variables or default to 5000
 
-// MongoDB connection string from environment variables
+const PORT = process.env.PORT || 5000;
+const FRONTEND_URL = process.env.FRONTEND_URL; // Get FRONTEND_URL from environment variables
+
+// Add CORS middleware
+app.use(cors({
+  origin: FRONTEND_URL,
+  credentials: true, // If you need to send cookies
+}));
+
 const mongoURI = process.env.MONGODB_URI;
 
 if (!mongoURI) {
@@ -27,7 +35,6 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Connected to MongoDB');
 
-    // Start the server only after successful connection to MongoDB
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
@@ -40,11 +47,11 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 // Register routers
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
-app.use('/api', complaintRouter); // Register complaint router
-app.use('/api', notificationRouter); // Register notification router
-app.use('/api', accidentRouter); // Register accident router
+app.use('/api', complaintRouter);
+app.use('/api', notificationRouter);
+app.use('/api', accidentRouter);
 app.use('/api', certificateRouter);
-app.use('/api', emailRouter); // Register email router
+app.use('/api', emailRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
