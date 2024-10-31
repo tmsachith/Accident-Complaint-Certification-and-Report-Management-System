@@ -16,26 +16,23 @@ export const getComplaints = async (req, res) => {
 
 // Function to update reviewer note
 export const updateReviewerNote = async (req, res) => {
-    const { id, reviewerNote } = req.body;
-
+    const { id, reviewerNote, status } = req.body;
+  
     try {
-        console.log("Received request to update reviewer note:", id, reviewerNote);
-        const complaint = await Complaint.findById(id);
-        if (!complaint) {
-            console.error("Complaint not found:", id);
-            return res.status(404).json({ message: "Complaint not found" });
-        }
-
-        complaint.reviewerNote = reviewerNote;
-        await complaint.save();
-
-        console.log("Reviewer note updated successfully:", complaint);
-        res.status(200).json({ message: "Reviewer note added successfully", complaint });
+      const complaint = await Complaint.findById(id);
+      if (!complaint) {
+        return res.status(404).json({ message: "Complaint not found" });
+      }
+  
+      complaint.reviewerNote = reviewerNote;
+      complaint.status = status;
+      await complaint.save();
+  
+      res.status(200).json({ message: "Reviewer note added and status updated successfully", complaint });
     } catch (error) {
-        console.error("Error updating reviewer note:", error);
-        res.status(500).json({ message: "Error updating reviewer note", error });
+      res.status(500).json({ message: "Error updating reviewer note", error });
     }
-};
+  };
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

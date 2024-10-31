@@ -47,8 +47,12 @@ export default function SignIn() {
   return (
     <div className="sign-in-container">
       <div className={`alertsign ${showAlert ? 'show' : ''}`}>{error}</div>
+      <div className="shapes">
+        <div className="shape shape1"></div>
+        <div className="shape shape2"></div>
+      </div>
       <div className="content">
-        <div className="text">Login</div>
+        <div className="text">Sign In</div>
         <form onSubmit={handleSubmit}>
           <div className="field">
             <input
@@ -74,7 +78,7 @@ export default function SignIn() {
             <a href="#">Forgot Password?</a>
           </div>
           <button className="button" disabled={loading}>
-            {loading ? 'Loading...' : 'Sign in'}
+            {loading ? 'Loading...' : <span>Sign in &#x1F511;</span>}
           </button>
         </form>
       </div>

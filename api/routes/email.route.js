@@ -1,6 +1,6 @@
 // routes/email.route.js
 import express from 'express';
-import { sendEmail } from '../controllers/email.controller.js'; // Assuming you have a controller file for email
+import { sendEmail, sendSMS } from '../controllers/email.controller.js'; // Assuming you have a controller file for email
 
 const router = express.Router();
 
@@ -15,6 +15,8 @@ router.post('/send-email', sendEmail); // Defining the email sending route
 //       res.status(500).json({ success: false, message: 'Failed to send email.' });
 //     }
 //   });
+
+router.post('/send-sms', sendSMS);
   
 
 export default router;

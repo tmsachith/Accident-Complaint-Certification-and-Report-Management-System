@@ -144,6 +144,11 @@ const AccidentReportForm = () => {
           text: `A high risk accident has been reported at ${formData.accidentLocation}. Please review the details.`,
         });
       }
+
+      await axios.post('/api/send-sms', {
+        to: `+94754377125`, // Recipient's phone number
+        message: `High Risk Accident Notification.. A high risk accident has been reported at ${formData.accidentLocation}. Please review the details.`
+      });
     }
 
     const formDataToSubmit = new FormData();
