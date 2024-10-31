@@ -78,7 +78,7 @@ export default function SignIn() {
             <a href="#">Forgot Password?</a>
           </div>
           <button className="button" disabled={loading}>
-            {loading ? 'Loading...' : <span>Sign in &#x1F511;</span>}
+            {loading ? 'Loading...' : <span>Sign in &#10149;</span>}
           </button>
         </form>
       </div>

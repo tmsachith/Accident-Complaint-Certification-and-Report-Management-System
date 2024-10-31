@@ -176,7 +176,7 @@ const Header = () => {
       <Link to="/dashboard">
         <Title>
           <img src={logo} alt="Logo" /> {/* Add the logo image here */}
-          <h1>BIO FOODS</h1>
+          <h1>BIO FOODS &#127798;</h1>
         </Title>
       </Link>
       <RightSection>
@@ -199,7 +199,7 @@ const Header = () => {
         ) : (
           <>
             <Button to="/">
-              Home
+            &#127968; Home
               <div className="arrow-wrapper"></div>
             </Button>
             <Button as="button" onClick={handleSignInClick}>
