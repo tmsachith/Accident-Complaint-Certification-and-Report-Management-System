@@ -23,7 +23,7 @@ export default function SignIn() {
     dispatch(signInStart());
 
     try {
-      const response = await axios.post('/api/auth/signin', {
+      const response = await axios.post('https://gpsw.vercel.app/api/auth/signin', {
         email,
         password,
       });
