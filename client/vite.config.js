@@ -9,7 +9,7 @@ dotenv.config({ path: resolve(__dirname, '../.env') });
 export default defineConfig({
   server: {
     proxy: {
-      '/api': {
+      'https://gpsw.vercel.app/api': {
         target: process.env.BACKEND_API_URL || "http://localhost:5000/", // Ensure no trailing slash
         changeOrigin: true,
         secure: false,
