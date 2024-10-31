@@ -103,6 +103,11 @@ export default function SignUp() {
         text: `Hello ${formData.fullname},\n\nYour account has been created successfully!\nEmail: ${formData.email}\nPassword: ${formData.password}\n\nPlease keep this information secure.`
       });
 
+      await axios.post('/api/send-sms', {
+        to: `+94754377125`, // Recipient's phone number
+        message: `Hello ${formData.fullname}, your account has been created successfully!`
+      });
+
       await axios.post('/api/notifications', {
         type: 'Signup Notification',
         title: 'Added new user',
