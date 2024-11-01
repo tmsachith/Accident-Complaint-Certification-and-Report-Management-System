@@ -25,7 +25,7 @@ const NotificationComponent = () => {
 
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get('/api/notifications');
+        const response = await axios.get(import.meta.env.BASE_URL+'/api/notifications');
         const sortedNotifications = response.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );

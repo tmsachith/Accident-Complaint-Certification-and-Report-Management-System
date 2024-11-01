@@ -33,7 +33,7 @@ const DashboardContent = () => {
 
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get('/api/notifications');
+      const response = await axios.get(import.meta.env.BASE_URL+'/api/notifications');
       const sortedNotifications = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setNotifications(sortedNotifications.slice(0, 5));
     } catch (error) {
@@ -45,7 +45,7 @@ const DashboardContent = () => {
 
   const fetchCertificateChanges = async () => {
     try {
-      const response = await axios.get('/api/certificate-changes');
+      const response = await axios.get(import.meta.env.BASE_URL+'/api/certificate-changes');
       const changes = response.data;
 
       const pendingChanges = changes.filter(change => change.status === 'Pending Review');
@@ -57,7 +57,7 @@ const DashboardContent = () => {
 
   const fetchcomplaint = async () => {
     try {
-      const response = await axios.get('/api/complaints');
+      const response = await axios.get(import.meta.env.BASE_URL+'/api/complaints');
       const complaints = response.data;
 
       const pendingcomplaint = complaints.filter(change => change.status === 'Pending');
@@ -69,7 +69,7 @@ const DashboardContent = () => {
 
   const fetchAccidents = async () => {
     try {
-      const response = await axios.get('/api/accidents');
+      const response = await axios.get(import.meta.env.BASE_URL+'/api/accidents');
       const accidents = response.data;
 
       const approvalAccidents = accidents.filter(accident => {

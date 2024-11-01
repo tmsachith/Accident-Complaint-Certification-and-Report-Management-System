@@ -18,7 +18,7 @@ const Announcement = () => {
     };
 
     try {
-      await axios.post('/api/notifications', notification);
+      await axios.post(import.meta.env.BASE_URL+'/api/notifications', notification);
       showAlert('Notification created successfully', 'success');
       setTitle('');
       setDescription('');

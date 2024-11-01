@@ -11,7 +11,7 @@ const ComplaintDetails = ({ complaintId }) => {
   useEffect(() => {
     const fetchComplaintDetails = async () => {
       try {
-        const response = await fetch(`/api/complaints/${complaintId}`);
+        const response = await fetch(`${import.meta.env.BASE_URL}/api/complaints/${complaintId}`);
         const data = await response.json();
         setComplaint(data);
       } catch (error) {
@@ -30,7 +30,7 @@ const ComplaintDetails = ({ complaintId }) => {
     if (!reviewNote.trim()) return;
 
     try {
-      await fetch(`/api/complaints/reviewer-note`, {
+      await fetch(`${import.meta.env.BASE_URL}/api/complaints/reviewer-note`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ const ComplaintDetails = ({ complaintId }) => {
       text: `Dear ${complaint.name},\n\nYour complaint titled "${complaint.issueTitle}" has been reviewed. The review note is as follows:\n\n"${reviewNote}"\n\nThank you for your patience.\n\nBest regards,\nCustomer Support Team`,
     };
 
-    await fetch('/api/send-email', {
+    await fetch(import.meta.env.BASE_URL+'/api/send-email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

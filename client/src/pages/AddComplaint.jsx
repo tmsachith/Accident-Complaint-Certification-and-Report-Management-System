@@ -69,7 +69,7 @@ const AddComplaint = () => {
     });
 
     try {
-      const response = await axios.post('/api/complaints', formDataWithFiles, {
+      const response = await axios.post(import.meta.env.BASE_URL+'/api/complaints', formDataWithFiles, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
@@ -107,7 +107,7 @@ const AddComplaint = () => {
       Bio Foods (PVT) LTD
     `;
 
-      const rese = await axios.post('/api/send-email', {
+      const rese = await axios.post(import.meta.env.BASE_URL+'/api/send-email', {
         to: formData.contactInfo,
         subject: 'Complaint Report',
         text: emailContent
