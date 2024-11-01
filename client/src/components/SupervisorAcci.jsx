@@ -18,7 +18,7 @@ const SupervisorAccident = () => {
     const fetchAccidents = async () => {
       setLoading(true);
       try {
-        const response = await fetch('/api/accidents');
+        const response = await fetch(import.meta.env.BASE_URL+'/api/accidents');
         const data = await response.json();
 
         const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));

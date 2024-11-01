@@ -138,14 +138,14 @@ const AccidentReportForm = () => {
     if (formData.riskLevel === 'High') {
       const email = locationEmails[formData.accidentLocation];
       if (email) {
-        await axios.post('/api/send-email', {
+        await axios.post(import.meta.env.BASE_URL+'/api/send-email', {
           to: email,
           subject: 'High Risk Accident Notification',
           text: `A high risk accident has been reported at ${formData.accidentLocation}. Please review the details.`,
         });
       }
 
-      await axios.post('/api/send-sms', {
+      await axios.post(import.meta.env.BASE_URL+'/api/send-sms', {
         to: `+94754377125`, // Recipient's phone number
         message: `High Risk Accident Notification.. A high risk accident has been reported at ${formData.accidentLocation}. Please review the details.`
       });
@@ -163,7 +163,7 @@ const AccidentReportForm = () => {
     });
 
     try {
-      const response = await axios.post('/api/accidents', formDataToSubmit, {
+      const response = await axios.post(import.meta.env.BASE_URL+'/api/accidents', formDataToSubmit, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

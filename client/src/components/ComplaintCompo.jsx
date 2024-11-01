@@ -12,7 +12,7 @@ const ComplaintCompo = () => {
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
-        const response = await axios.get('/api/complaints');
+        const response = await axios.get(import.meta.env.BASE_URL+'/api/complaints');
         setComplaints(response.data);
       } catch (error) {
         console.error('Error fetching complaints:', error);

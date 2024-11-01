@@ -15,7 +15,7 @@ const AccidentDetails = ({ accidentId }) => {
     const fetchAccidentDetails = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/accidents/${accidentId}`);
+        const response = await fetch(`${import.meta.env.BASE_URL}/api/accidents/${accidentId}`);
         const data = await response.json();
         setAccident(data);
       } catch (error) {
@@ -46,7 +46,7 @@ const AccidentDetails = ({ accidentId }) => {
     }
 
     try {
-      const response = await fetch(`/api/accidents/${accidentId}`, {
+      const response = await fetch(`${import.meta.env.BASE_URL}/api/accidents/${accidentId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -25,7 +25,7 @@ const CertificateChange = () => {
     const fetchChanges = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/certificate-changes');
+        const response = await fetch(import.meta.env.BASE_URL+'/api/certificate-changes');
         const data = await response.json();
   
         const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -67,7 +67,7 @@ const CertificateChange = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/certificate-changes', {
+      const response = await fetch(import.meta.env.BASE_URL+'/api/certificate-changes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

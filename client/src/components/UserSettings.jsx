@@ -38,7 +38,7 @@ const UserSettings = () => {
   const handleCurrentPasswordSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/auth/verify-password', { email, currentPassword });
+      const response = await axios.post(import.meta.env.BASE_URL+'/api/auth/verify-password', { email, currentPassword });
       if (response.status === 200) {
         setShowNewPasswordFields(true);
         setAlert('');
@@ -68,7 +68,7 @@ const UserSettings = () => {
     }
 
     try {
-      const response = await axios.post('/api/auth/change-password', { email, newPassword });
+      const response = await axios.post(import.meta.env.BASE_URL+'/api/auth/change-password', { email, newPassword });
       if (response.status === 200) {
         setAlert('Password updated successfully');
         setCurrentPassword('');

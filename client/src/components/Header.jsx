@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios'; // Import axios for making API requests
 import logo from '../assets/logo.png'; // Import the logo image
 
+
 // Styled components for the header
 const HeaderWrapper = styled.header`
   display: flex;
@@ -134,6 +135,7 @@ const Header = () => {
   const [position, setPosition] = useState(null);
   const [notificationCount, setNotificationCount] = useState(0);
 
+
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
     const storedPosition = localStorage.getItem('position');
@@ -149,7 +151,7 @@ const Header = () => {
     // Fetch notifications from the backend
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get('/api/notifications');
+        const response = await axios.get(import.meta.env.BASE_URL+'/api/notifications');
         setNotificationCount(response.data.length); // Set the notification count
       } catch (error) {
         console.error('Error fetching notifications', error);
@@ -171,6 +173,8 @@ const Header = () => {
     navigate('/sign-in');
   };
 
+  
+
   return (
     <HeaderWrapper>
       <Link to="/dashboard">
@@ -182,7 +186,7 @@ const Header = () => {
       <RightSection>
         {username ? (
           <>
-            <WelcomeCard>Welcome, {username} ({position})!</WelcomeCard>
+            <WelcomeCard> Welcome, {username} ({position})!</WelcomeCard>
             <NotificationIcon to="/notifications">
               <FaBell style={{ fontSize: '24px' }} />
               {notificationCount > 0 && (
@@ -206,7 +210,7 @@ const Header = () => {
               Sign In
               <div className="arrow-wrapper"></div>
             </Button>
-            <Button to="/contact">
+            <Button as="button" onClick={() => window.open('https://www.biofoodslk.com/contact-us', '_blank')}>
               Contact Us
               <div className="arrow-wrapper"></div>
             </Button>

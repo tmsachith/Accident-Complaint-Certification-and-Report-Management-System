@@ -12,7 +12,7 @@ const CertificateChangeDetails = ({ changeId }) => {
   useEffect(() => {
     const fetchCertificateChange = async () => {
       try {
-        const response = await fetch(`/api/certificate-changes/${changeId}`);
+        const response = await fetch(`${import.meta.env.BASE_URL}/api/certificate-changes/${changeId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch certificate change details');
         }
@@ -31,7 +31,7 @@ const CertificateChangeDetails = ({ changeId }) => {
   const handleUpdate = async (newStatus) => {
     setSaving(true);
     try {
-      const response = await fetch(`/api/certificate-changes/${changeId}`, {
+      const response = await fetch(`${import.meta.env.BASE_URL}/api/certificate-changes/${changeId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

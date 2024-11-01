@@ -4,13 +4,13 @@ import dotenv from 'dotenv';
 import { resolve } from 'path';
 
 // Load .env from the parent directory (root level)
-// dotenv.config({ path: resolve(__dirname, '../.env') });
+dotenv.config({ path: resolve(__dirname, '../.env') });
 
 export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: process.env.BACKEND_API_URL , // Ensure no trailing slash
+        target: process.env.BACKEND_API_URL, // Ensure no trailing slash
         changeOrigin: true,
         secure: false,
       },
@@ -24,4 +24,8 @@ export default defineConfig({
     },
   },
   plugins: [react()],
+  define: {
+    'import.meta.env.BASE_URL': JSON.stringify(process.env.BASE_URL)
+    
+  }
 });
