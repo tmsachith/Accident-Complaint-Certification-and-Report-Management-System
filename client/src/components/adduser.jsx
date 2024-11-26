@@ -132,6 +132,7 @@ export default function SignUp() {
   };
 
   return (
+    <div className="con">
     <div className="content1">
       <div className="text">Add User</div>
       <div className="progress-container">
@@ -361,6 +362,7 @@ export default function SignUp() {
         </div>
       )}
       {error && <p className="error-text">{error}</p>}
+    </div>
     </div>
   );
 }

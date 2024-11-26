@@ -1,8 +1,10 @@
 import Complaint from '../models/complaint.model.js';
-import path from 'path';
-import fs from 'fs';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import multer from 'multer';
 import { fileURLToPath } from 'url';
+import path from 'path';
+import fs from 'fs';
 
 // Function to get all complaints
 export const getComplaints = async (req, res) => {
@@ -34,30 +36,27 @@ export const updateReviewerNote = async (req, res) => {
     }
   };
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Cloudinary configuration
+cloudinary.config({
+  cloud_name: 'dvijdm1ti',
+  api_key: '921332166373589',
+  api_secret: 'IvFV5OMPw49p7JDaYYe_IbJ6MjY',
+});
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const relativeDir = 'uploads/complaints/';
-    const dir = path.join(__dirname, `../../client/src/${relativeDir}`);
-
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    cb(null, dir);
+// Set up Cloudinary storage
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'complaints', // Folder name in Cloudinary
+    allowed_formats: ['jpg', 'png', 'jpeg'],
   },
-  filename: (req, file, cb) => {
-    const filename = Date.now() + path.extname(file.originalname);
-    cb(null, filename);
-  }
 });
 
 export const upload = multer({ storage: storage });
 
 export const addComplaint = async (req, res) => {
   const complaintData = req.body;
-  const attachments = req.files.map(file => file.filename);
+  const attachments = req.files.map(file => file.path); // Cloudinary URL of the file
 
   try {
     const newComplaint = new Complaint({ ...complaintData, attachments });

@@ -116,9 +116,9 @@ const ComplaintDetails = ({ complaintId }) => {
               {complaint.attachments.map((file, index) => (
                 <img
                   key={index}
-                  src={`http://localhost:5173/src/uploads/complaints/${file}`}
+                  src={`${file}`}
                   alt={`Attachment ${index + 1}`}
-                  onClick={() => openModal(`http://localhost:5173/src/uploads/complaints/${file}`)}
+                  onClick={() => openModal(`${file}`)}
                 />
               ))}
             </div>
