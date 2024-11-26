@@ -25,6 +25,7 @@ const AddComplaint = () => {
 
   const [attachments, setAttachments] = useState([]);
   const [step, setStep] = useState(1);
+  const [statusPopup, setStatusPopup] = useState({ show: false, message: '', success: null });
 
   const brandOptions = ['Brand A', 'Brand B', 'Brand C'];
   const productOptions = {
@@ -60,6 +61,7 @@ const AddComplaint = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setStatusPopup({ show: true, message: 'Submitting your complaint...', success: null });
     const formDataWithFiles = new FormData();
     Object.keys(formData).forEach(key => {
       formDataWithFiles.append(key, formData[key]);
@@ -113,10 +115,17 @@ const AddComplaint = () => {
         text: emailContent
       });
 
-      alert(rese.data.message);
-      alert(response.data.message);
+      setStatusPopup({ show: true, message: 'Complaint submitted successfully!', success: true });
     } catch (error) {
       console.error('Error submitting complaint:', error);
+      setStatusPopup({ show: true, message: 'An error occurred. Please try again.', success: false });
+    }
+  };
+
+  const closePopup = () => {
+    setStatusPopup({ show: false, message: '', success: null });
+    if (statusPopup.success) {
+      window.location.reload();
     }
   };
 
@@ -129,7 +138,7 @@ const AddComplaint = () => {
         <div className="form-step">
           <h2>Customer Details</h2>
           <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" required />
-          <input type="text" name="contactInfo" value={formData.contactInfo} onChange={handleChange} placeholder="Email" required />
+          <input type="email" name="contactInfo" value={formData.contactInfo} onChange={handleChange} placeholder="Email" required />
           <input type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Address" />
           <button type="button" onClick={nextStep}>Next</button>
         </div>
@@ -195,7 +204,20 @@ const AddComplaint = () => {
           <button type="submit">Submit Complaint</button>
         </div>
       )}
+
+{statusPopup.show && (
+        <div className="popup-container">
+          <div className="popup-card">
+            <p>{statusPopup.message}</p>
+            {statusPopup.success !== null && (
+              <button onClick={closePopup}>{statusPopup.success ? 'Done' : 'Close'}</button>
+            )}
+          </div>
+        </div>
+      )}
+      
     </form>
+    
   );
 };
 

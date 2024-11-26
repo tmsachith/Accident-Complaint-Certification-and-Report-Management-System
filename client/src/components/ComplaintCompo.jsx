@@ -67,7 +67,7 @@ const ComplaintCompo = () => {
               <div className="complaint-item" id={`complaint-item-${complaint._id}`}>
                 {complaint.attachments && complaint.attachments.length > 0 && (
                   <img
-                    src={`http://localhost:5173/src/uploads/complaints/${complaint.attachments[0]}`}
+                    src={`${complaint.attachments[0]}`}
                     alt="Complaint Attachment"
                     className="complaint-image"
                     id={`complaint-image-${complaint._id}`}
