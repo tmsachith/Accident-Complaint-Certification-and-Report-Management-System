@@ -145,3 +145,18 @@
     opacity: 1;
   }
 }
+
+.export-pdf-button {
+  /* Default styles for the button */
+  background-color: #007bff; /* Primary color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.export-pdf-button:disabled {
+  background-color: #d3d3d3; /* Gray color when disabled */
+  color: #a9a9a9; /* Darker gray for text */
+  cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+}

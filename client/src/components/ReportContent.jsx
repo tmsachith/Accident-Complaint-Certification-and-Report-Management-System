@@ -27,7 +27,7 @@ const ReportContent = () => {
       </div>
       {loaded.accidents && (
         <iframe
-          src="https://lookerstudio.google.com/embed/reporting/a32084ae-3a39-45fc-bd11-fd23463a1e70/page/N42GE"
+          src="https://lookerstudio.google.com/embed/reporting/c87b71b9-2add-4af2-8a14-472a3a1d9a1c/page/N42GE"
           title="Accidents"
           width="100%"
           height="600px"
@@ -36,7 +36,7 @@ const ReportContent = () => {
       )}
       {loaded.complaints && (
         <iframe
-          src="https://lookerstudio.google.com/embed/reporting/7299a0f1-75fb-40f8-a323-6a1a4716623d/page/4bnHE"
+          src="https://lookerstudio.google.com/embed/reporting/d911f996-f4ba-47fa-8cc7-1357986e0598/page/4bnHE"
           title="Complaints"
           width="100%"
           height="600px"
