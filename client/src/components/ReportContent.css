@@ -6,22 +6,39 @@
 }
 
 .button-group {
+    display: flex; /* Use flexbox for horizontal arrangement */
     margin-bottom: 20px;
 }
 
-.button-group button {
-    margin-right: 10px;
+.button {
     padding: 12px 24px;
-    background-color: #007bff;
+    background-color: #007bff; /* Primary color */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Added transition for transform and box-shadow */
+    margin-right: 10px; /* Space between buttons */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
-.button-group button:hover,
-.button-group button.active {
-    background-color: #0056b3;
+.button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.button.active {
+    background-color: #0056b3; /* Keep active state color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow for active button */
+}
+
+.button:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.5); /* Custom focus ring */
+}
+
+/* Optional - Remove margin from the last button */
+.button:last-child {
+    margin-right: 0; /* No margin on the last button */
 }

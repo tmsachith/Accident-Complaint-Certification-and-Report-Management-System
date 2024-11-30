@@ -12,14 +12,14 @@ const ReportContent = () => {
   return (
     <div className="report-content-container">
       <div className="button-group">
-        <button
-          className={view === 'accidents' ? 'active' : ''}
+        <button 
+          className={`button ${view === 'accidents' ? 'active' : ''}`}
           onClick={() => handleTabChange('accidents')}
         >
           Accidents
         </button>
-        <button
-          className={view === 'complaints' ? 'active' : ''}
+        <button 
+          className={`button ${view === 'complaints' ? 'active' : ''}`}
           onClick={() => handleTabChange('complaints')}
         >
           Complaints

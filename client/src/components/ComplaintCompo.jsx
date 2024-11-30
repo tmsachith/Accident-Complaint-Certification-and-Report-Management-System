@@ -3,11 +3,13 @@ import axios from 'axios';
 import { FaCalendarAlt, FaMapMarkerAlt, FaTag, FaPlus } from 'react-icons/fa';
 import { format } from 'date-fns';
 import './ComplaintCompo.css';
+import { formatDistanceToNow } from 'date-fns';
 
 const ComplaintCompo = () => {
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('pending');
+  const [hoveredCard, setHoveredCard] = useState(null); // Track which card is hovered
 
   useEffect(() => {
     const fetchComplaints = async () => {
@@ -63,7 +65,7 @@ const ComplaintCompo = () => {
       ) : (
         <ul id="complaints-list">
           {filteredComplaints.slice().reverse().map((complaint) => (
-            <li key={complaint._id} onClick={() => handleComplaintClick(complaint)} id={`complaint-${complaint._id}`}>
+            <li key={complaint._id} onClick={() => handleComplaintClick(complaint)} onMouseEnter={() => setHoveredCard(complaint._id)} onMouseLeave={() => setHoveredCard(null)} id={`complaint-${complaint._id}`}>
               <div className="complaint-item" id={`complaint-item-${complaint._id}`}>
                 {complaint.attachments && complaint.attachments.length > 0 && (
                   <img
@@ -78,9 +80,15 @@ const ComplaintCompo = () => {
                   <p><FaTag /> {complaint.productName}</p>
                   <p><FaMapMarkerAlt /> {complaint.purchasePlace}</p>
                   <span className={`status-label ${complaint.status.toLowerCase()}`}>{complaint.status}</span>
-                  <p className="created-at">
-                    <FaCalendarAlt /> {format(new Date(complaint.createdAt), 'PPpp')}
-                  </p>
+                  <div className="created-at-container">
+                    <p className="created-at">
+                      <FaCalendarAlt />{" "}
+                      {hoveredCard === complaint._id
+                        ? format(new Date(complaint.createdAt), "PPpp") // Show real date on hover
+                        : formatDistanceToNow(new Date(complaint.createdAt), { addSuffix: true })}{" "}
+                      {/* Show "how much ago" format by default */}
+                    </p>
+                  </div>
                 </div>
               </div>
             </li>
