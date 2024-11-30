@@ -3,30 +3,23 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import Accident from '../models/Accident.js';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
 
-// Get __filename and __dirname equivalent for ES module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: 'dvijdm1ti', // Replace with your Cloudinary cloud name
+  api_key: '921332166373589', // Replace with your Cloudinary API key
+  api_secret: 'IvFV5OMPw49p7JDaYYe_IbJ6MjY', // Replace with your Cloudinary API secret
+});
 
-// Define storage configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const relativeDir = 'uploads/accidents/';  // Only this part will be stored in DB
-    const dir = path.join(__dirname, `../../client/src/${relativeDir}`);
-    
-    // Ensure the directory exists
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    cb(null, dir);  // Save the file in the full directory on disk
+// Set up Cloudinary storage for Multer
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'accidents', // Folder name in Cloudinary
+    allowed_formats: ['jpg', 'png', 'jpeg'], // Allowed file formats
   },
-  filename: (req, file, cb) => {
-    const filename = Date.now() + path.extname(file.originalname);
-    cb(null, filename);  // Use timestamp-based filename
-
-    // Save the relative directory and file name separately for database use
-    req.savedFileName = filename;  // Save only the file name (not the full path)
-  }
 });
 
 const upload = multer({ storage: storage });
@@ -34,16 +27,18 @@ const upload = multer({ storage: storage });
 // Controller to create a new accident report
 export const createAccident = async (req, res) => {
   try {
-    const attachments = req.files.map(file => req.savedFileName); // Only save the file name (e.g., filename.jpg)
+    // Map the uploaded files to their Cloudinary URLs
+    const attachments = req.files.map(file => file.path); // Each file's `path` contains the Cloudinary URL
     
+    // Create a new accident report with the provided data and attachments
     const newAccident = new Accident({ 
       ...req.body, 
-      attachments // Save array of filenames without the path
+      attachments, // Save the Cloudinary URLs for the uploaded files
     });
-    
+
     await newAccident.save();
-    
-    res.status(201).json({ message: 'Accident report created successfully' });
+
+    res.status(201).json({ message: 'Accident report created successfully', accident: newAccident });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }

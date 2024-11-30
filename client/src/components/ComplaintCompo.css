@@ -182,3 +182,26 @@
 .add-complaint-button:hover {
   background-color: #218838;
 }
+
+.complaint-info h2 {
+  margin: 0 0 5px 0;
+  font-size: 1.25rem;
+  color: #000; /* Change color to black */
+  word-break: break-word;
+  text-align: left; /* Align text to the left */
+}
+
+.created-at-container {
+  display: flex;
+  justify-content: flex-end; /* Align the content to the right */
+  margin-top: 10px;
+}
+
+.created-at {
+  font-style: italic;
+  color: #555;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
