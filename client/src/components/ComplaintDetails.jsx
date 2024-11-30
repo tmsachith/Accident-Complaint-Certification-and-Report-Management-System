@@ -85,7 +85,7 @@ const ComplaintDetails = ({ complaintId }) => {
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
         pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save("download.pdf");
+        pdf.save(`${complaintId}.pdf`);
 
         // Show the PDF export button again
         if (pdfButtonRef.current) {
@@ -192,7 +192,8 @@ const ComplaintDetails = ({ complaintId }) => {
           <button 
             ref={pdfButtonRef} 
             className="export-pdf-button" 
-            onClick={generatePDF}
+            onClick={complaint.status === "Closed" ? generatePDF : null} // Only call generatePDF if status is Closed
+            disabled={complaint.status !== "Closed"} // Disable button if status is not Closed
           >
             Export as PDF
           </button>
