@@ -1,112 +1,75 @@
 .user-settings {
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 5px;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  .user-settings h2 {
-    margin-bottom: 20px;
-  }
-  
-  .settings-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .form-group input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-  }
-  
-  .save-button {
-    padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .save-button:hover {
-    background-color: #45a049;
-  }
-  
-  .error-text {
-    color: red;
-    margin-top: 5px;
-    font-size: 0.9em;
-  }
-
-  .user-settings {
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 5px;
-    max-width: 600px;
-    margin: 0 auto;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .user-settings h2 {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .settings-form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .form-group label {
-    margin-bottom: 5px;
-    font-weight: bold;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .form-group input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-input input {
+  padding-right: 30px; /* Adjust padding for icon */
 }
 
 .save-button {
-    padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .save-button:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
 .error-text {
-    color: red;
-    margin-top: 5px;
-    font-size: 0.9em;
+  color: red;
+  margin-top: 5px;
+  font-size: 0.9em;
 }
 
 .alert {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    border: 1px solid #f5c6cb;
-    border-radius: 5px;
-    margin-bottom: 20px;
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+}
+
+.password-input .fa-eye,
+.password-input .fa-eye-slash {
+ position: absolute; 
+ right: 10px; 
+ top: calc(50% - 10px); /* Center vertically */
+ cursor: pointer; 
+ color: #aaa; /* Change color as needed */
 }

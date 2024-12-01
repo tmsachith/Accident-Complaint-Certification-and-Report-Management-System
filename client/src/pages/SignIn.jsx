@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './SignIn.css';
-
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  signInStart,
-  signInSuccess,
-  signInFailure
-} from '../redux/user/userSlice';
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash, faTimes } from '@fortawesome/free-solid-svg-icons'; // Import close icon
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [nic, setNic] = useState('');
+  const [showNicInput, setShowNicInput] = useState(false);
   const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ export default function SignIn() {
     dispatch(signInStart());
 
     try {
-      const response = await axios.post(import.meta.env.BASE_URL+'/api/auth/signin', {
+      const response = await axios.post(import.meta.env.BASE_URL + '/api/auth/signin', {
         email,
         password,
       });
@@ -41,6 +41,17 @@ export default function SignIn() {
       dispatch(signInFailure(error.response?.data?.message || 'Login failed. Please try again.'));
       setShowAlert(true);
       setTimeout(() => setShowAlert(false), 3000);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    try {
+      const response = await axios.post(import.meta.env.BASE_URL + '/api/auth/forgot-password', { nic });
+      alert(response.data.message); // Display success message
+      setShowNicInput(false); // Hide NIC popup after submitting the request
+      setNic(''); // Reset nic field
+    } catch (error) {
+      alert(error.response?.data?.message || 'Error while processing request.');
     }
   };
 
@@ -64,23 +75,56 @@ export default function SignIn() {
             />
             <label className="label">Email</label>
           </div>
-          <div className="field">
+          <div className="field password-field">
             <input
               required
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               className="input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <label className="label">Password</label>
+            <span 
+              className="toggle-password"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+            </span>
           </div>
           <div className="forgot-pass">
-            <a href="#">Forgot Password?</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); setShowNicInput(true); }}>
+              Forgot Password?
+            </a>
           </div>
           <button className="button" disabled={loading}>
             {loading ? 'Loading...' : <span>Sign in &#10149;</span>}
           </button>
         </form>
+
+        {showNicInput && (
+          <div className="nic-popup">
+            <div className="nic-popup-content">
+              <span 
+                className="close-popup"
+                onClick={() => setShowNicInput(false)}
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </span>
+              <h3 className="popup-title">Reset Password</h3>
+              <input
+                type="email"
+                className="email-input"
+                placeholder="Enter your Email"
+                value={nic}
+                onChange={(e) => setNic(e.target.value)}
+              />
+              <div className="nic-popup-actions">
+                <button className="reset-button" onClick={handleForgotPassword}>Reset</button>
+                {/* <button className="cancel-button" onClick={() => setShowNicInput(false)}>Cancel</button> */}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

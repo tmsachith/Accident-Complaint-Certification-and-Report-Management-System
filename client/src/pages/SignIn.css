@@ -173,3 +173,129 @@
   top: 20px;
   opacity: 1;
 }
+
+.password-field {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666666;
+}
+
+.nic-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.nic-popup-content {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px; /* Increased padding for better spacing */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 300px; /* Fixed width for the popup */
+  text-align: center; /* Center-align text in the content */
+}
+
+.popup-title {
+  margin-bottom: 20px; /* Margin below the title for spacing */
+  font-weight: bold; /* Bold title text */
+}
+
+.nic-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.nic-popup-content {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px; /* Increased padding for better spacing */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 300px; /* Fixed width for the popup */
+  position: relative; /* For positioning close icon */
+  text-align: center; /* Center text in the content */
+}
+
+.close-popup {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #999; /* Color of the close icon */
+  font-size: 18px; /* Size of the close icon */
+}
+
+.popup-title {
+  margin-bottom: 20px; /* Margin below the title for spacing */
+  font-weight: bold; /* Bold title text */
+}
+
+.email-input {
+  width: calc(100% - 20px); /* Adjust for padding */
+  margin-bottom: 15px; /* Spacing below the input */
+  padding: 10px; /* Padding for better user experience */
+  border: 1px solid #ccc; /* Border style */
+  border-radius: 5px; /* Rounded corners */
+}
+
+.nic-popup-actions {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  align-items: center; /* Center align buttons */
+  margin-top: 20px; /* Added margin for spacing between buttons */
+}
+
+.reset-button,
+.cancel-button {
+  width: 100%; /* Full width buttons */
+  margin: 5px 0; /* Add margin between buttons */
+}
+
+.reset-button {
+  background: #4CAF50; /* Green background */
+  color: white; /* White text */
+  padding: 10px 15px; /* Padding for the button */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background 0.3s; /* Smooth background transition */
+}
+
+.reset-button:hover {
+  background: #45a049; /* Darker green on hover */
+}
+
+.cancel-button {
+  background: #f44336; /* Red background */
+  color: white; /* White text */
+  padding: 10px 15px; /* Padding for the button */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background 0.3s; /* Smooth background transition */
+}
+
+.cancel-button:hover {
+  background: #d32f2f; /* Darker red on hover */
+}

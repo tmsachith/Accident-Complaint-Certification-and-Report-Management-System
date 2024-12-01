@@ -3,6 +3,7 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative; /* For positioning loading message */
 }
 
 .button-group {
@@ -38,7 +39,29 @@
     box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.5); /* Custom focus ring */
 }
 
-/* Optional - Remove margin from the last button */
-.button:last-child {
-    margin-right: 0; /* No margin on the last button */
+/* Loading container styles */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 160px); /* Adjust height based on your layout */
+    text-align: center; /* Center text horizontally */
+}
+
+.loading-container p {
+    margin-top: 10px;
+    font-size: 18px;
+    color: lightgray; /* Light gray color for text */
+}
+
+/* Rotate spinner icon */
+.loading-container .fa-spinner {
+    animation: spin 1s linear infinite; /* Spin animation for the loading icon */
+}
+
+/* Keyframes for spinning effect */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }

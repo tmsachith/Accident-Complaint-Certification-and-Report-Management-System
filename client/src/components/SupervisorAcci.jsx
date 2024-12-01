@@ -84,9 +84,9 @@ const SupervisorAccident = () => {
           )}
           <div className="accident-details">
             <div className="accident-title">
-              {accident.description.length > 50
-                ? `${accident.description.substring(0, 100)}...`
-                : accident.description}
+              {accident.injuryType.length > 50
+                ? `${accident.injuryType.substring(0, 100)}...`
+                : accident.injuryType}
             </div>
             <div className="accident-location-department">
               <FaMapMarkerAlt /> {accident.accidentLocation} | <FaUserTie /> {accident.department}
