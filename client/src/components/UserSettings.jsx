@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './UserSettings.css';
 
 const UserSettings = () => {
@@ -10,6 +12,8 @@ const UserSettings = () => {
   const [email, setEmail] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [alert, setAlert] = useState('');
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   useEffect(() => {
     const storedEmail = localStorage.getItem('email');
@@ -38,7 +42,7 @@ const UserSettings = () => {
   const handleCurrentPasswordSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(import.meta.env.BASE_URL+'/api/auth/verify-password', { email, currentPassword });
+      const response = await axios.post(import.meta.env.BASE_URL + '/api/auth/verify-password', { email, currentPassword });
       if (response.status === 200) {
         setShowNewPasswordFields(true);
         setAlert('');
@@ -68,7 +72,7 @@ const UserSettings = () => {
     }
 
     try {
-      const response = await axios.post(import.meta.env.BASE_URL+'/api/auth/change-password', { email, newPassword });
+      const response = await axios.post(import.meta.env.BASE_URL + '/api/auth/change-password', { email, newPassword });
       if (response.status === 200) {
         setAlert('Password updated successfully');
         setCurrentPassword('');
@@ -91,14 +95,21 @@ const UserSettings = () => {
         <form className="settings-form" onSubmit={handleCurrentPasswordSubmit}>
           <div className="form-group">
             <label htmlFor="current-password">Current Password:</label>
-            <input
-              type="password"
-              id="current-password"
-              name="current-password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              placeholder="Enter your current password"
-            />
+            <div className="password-input">
+              <input
+                type={showCurrentPassword ? 'text' : 'password'}
+                id="current-password"
+                name="current-password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="Enter your current password"
+              />
+              <FontAwesomeIcon 
+                icon={showCurrentPassword ? faEyeSlash : faEye} 
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)} 
+                style={{ cursor: 'pointer' }} 
+              />
+            </div>
           </div>
           <button type="submit" className="save-button">Request Change Password</button>
         </form>
@@ -108,20 +119,27 @@ const UserSettings = () => {
         <form className="settings-form" onSubmit={handleNewPasswordSubmit}>
           <div className="form-group">
             <label htmlFor="new-password">New Password:</label>
-            <input
-              type="password"
-              id="new-password"
-              name="new-password"
-              value={newPassword}
-              onChange={handleNewPasswordChange}
-              placeholder="Enter your new password"
-            />
-            {passwordError && <p className="error-text">{passwordError}</p>}
+            <div className="password-input">
+              <input
+                type={showNewPassword ? 'text' : 'password'}
+                id="new-password"
+                name="new-password"
+                value={newPassword}
+                onChange={handleNewPasswordChange}
+                placeholder="Enter your new password"
+              />
+              <FontAwesomeIcon 
+                icon={showNewPassword ? faEyeSlash : faEye} 
+                onClick={() => setShowNewPassword(!showNewPassword)} 
+                style={{ cursor: 'pointer' }} 
+              />
+              {passwordError && <p className="error-text">{passwordError}</p>}
+            </div>
           </div>
           <div className="form-group">
             <label htmlFor="confirm-new-password">Confirm New Password:</label>
             <input
-              type="password"
+              type="password" // No toggle for visibility
               id="confirm-new-password"
               name="confirm-new-password"
               value={confirmNewPassword}

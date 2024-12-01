@@ -27,11 +27,62 @@ const AddComplaint = () => {
   const [step, setStep] = useState(1);
   const [statusPopup, setStatusPopup] = useState({ show: false, message: '', success: null });
 
-  const brandOptions = ['Brand A', 'Brand B', 'Brand C'];
+  const brandOptions = ['Black Tea Grades', 'Green Tea Grades', 'Spices Whole','Spices Tea Bag Cut (TBC)','Spices Powder'];
   const productOptions = {
-    'Brand A': [{ name: 'Product A1', code: 'A1' }, { name: 'Product A2', code: 'A2' }],
-    'Brand B': [{ name: 'Product B1', code: 'B1' }, { name: 'Product B2', code: 'B2' }],
-    'Brand C': [{ name: 'Product C1', code: 'C1' }, { name: 'Product C2', code: 'C2' }]
+    'Black Tea Grades': [
+        { name: 'OP', code: 'OP' },
+        { name: 'Flowery Pekoe', code: 'FP' },
+        { name: 'Pekoe', code: 'PK' },
+        { name: 'FBOP', code: 'FBOP' },  // Added FBOP
+        { name: 'BOP', code: 'BOP' },    // Added BOP
+        { name: 'BOPF', code: 'BOPF' },  // Added BOPF
+        { name: 'Dust1', code: 'D1' }    // Added Dust1
+    ],
+    'Green Tea Grades': [
+        { name: 'BT1', code: 'BT1' },          // Added BT1
+        { name: 'CB1SP', code: 'CB1SP' },      // Added CB1SP
+        { name: 'Green Fannings', code: 'GF' }, // Added Green Fannings
+        { name: 'BT2', code: 'BT2' },          // Added BT2
+        { name: 'BT3', code: 'BT3' },          // Added BT3
+        { name: 'CBSP', code: 'CBSP' },        // Added CBSP
+        { name: 'CB', code: 'CB' },            // Added CB
+        { name: 'Dust1', code: 'D1' }          // Added Dust1
+    ],
+    'Spices Whole': [
+        { name: 'Black Pepper', code: 'BP' },      // Added Black Pepper
+        { name: 'Cardamom Pods', code: 'CP' },     // Added Cardamom Pods
+        { name: 'Chilli', code: 'CH' },             // Added Chilli
+        { name: 'Cinnamon Quills', code: 'CQ' },   // Added Cinnamon Quills
+        { name: 'Clove Pods', code: 'CLP' },        // Added Clove Pods
+        { name: 'Ginger Pieces', code: 'GP' },      // Added Ginger Pieces
+        { name: 'Cardamom Seeds', code: 'CS' },     // Added Cardamom Seeds
+        { name: 'Mace Red', code: 'MR' },           // Added Mace Red
+        { name: 'Nutmeg', code: 'NUT' },            // Added Nutmeg
+        { name: 'Vanilla Beans', code: 'VB' },      // Added Vanilla Beans
+        { name: 'White Pepper', code: 'WP' },       // Added White Pepper
+        { name: 'Turmeric', code: 'TUR' }           // Added Turmeric
+    ],
+    // New category added here
+    'Spices Tea Bag Cut (TBC)': [
+        { name: 'Black Pepper TBC', code: 'BPTBC' },  // Added Black Pepper TBC
+        { name: 'Cardamom TBC', code: 'CTBC' },       // Added Cardamom TBC
+        { name: 'Clove TBC', code: 'CTBC2' },          // Added Clove TBC
+        { name: 'Ginger TBC', code: 'GTBC' },          // Added Ginger TBC
+        { name: 'Lemongrass TBC', code: 'LTBC' },      // Added Lemongrass TBC
+        { name: 'Nutmeg TBC', code: 'NTBC' }           // Added Nutmeg TBC
+    ],
+    // New category added here
+    'Spices Powder': [
+        { name: 'Black Pepper Powder', code: 'BPP' },   // Added Black Pepper Powder
+        { name: 'Ginger Powder', code: 'GPW' },          // Added Ginger Powder
+        { name: 'Clove Powder', code: 'CPW' },           // Added Clove Powder
+        { name: 'Chilli Powder', code: 'CHPW' },         // Added Chilli Powder
+        { name: 'Mace Powder', code: 'MPW' },            // Added Mace Powder
+        { name: 'Nutmeg Powder', code: 'NPW' },          // Added Nutmeg Powder
+        { name: 'Turmeric Powder', code: 'TPW' },        // Added Turmeric Powder
+        { name: 'White Pepper Powder', code: 'WPPW' },   // Added White Pepper Powder
+        { name: 'Cinnamon Powder', code: 'CPW2' }         // Added Cinnamon Powder
+    ]
   };
   const purchasePlaces = ['Online Store', 'Local Market', 'International Shop'];
 
@@ -215,7 +266,7 @@ const AddComplaint = () => {
           </div>
         </div>
       )}
-      
+
     </form>
     
   );

@@ -9,7 +9,7 @@ const ComplaintDetails = ({ complaintId }) => {
   const [modalImage, setModalImage] = useState(null);
   const [alert, setAlert] = useState(null);
   const componentRef = useRef();
-  const pdfButtonRef = useRef(); // Reference for the PDF export button
+  const pdfButtonRef = useRef();
 
   useEffect(() => {
     const fetchComplaintDetails = async () => {
@@ -70,9 +70,7 @@ const ComplaintDetails = ({ complaintId }) => {
   const openModal = (imageUrl) => setModalImage(imageUrl);
   const closeModal = () => setModalImage(null);
 
-  // Function to generate PDF
   const generatePDF = () => {
-    // Hide the PDF export button
     if (pdfButtonRef.current) {
       pdfButtonRef.current.style.display = 'none';
     }
@@ -87,7 +85,6 @@ const ComplaintDetails = ({ complaintId }) => {
         pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save(`${complaintId}.pdf`);
 
-        // Show the PDF export button again
         if (pdfButtonRef.current) {
           pdfButtonRef.current.style.display = 'block';
         }
@@ -95,7 +92,6 @@ const ComplaintDetails = ({ complaintId }) => {
       .catch(function (error) {
         console.error('Error generating PDF:', error);
 
-        // Show the PDF export button again in case of error
         if (pdfButtonRef.current) {
           pdfButtonRef.current.style.display = 'block';
         }
@@ -110,6 +106,11 @@ const ComplaintDetails = ({ complaintId }) => {
 
       <div className="complaint-details" ref={componentRef}>
         <h2>Complaint Details</h2>
+
+        {/* Status Bar */}
+        <section className="status-bar">
+          <p>Status: <strong>{complaint.status}</strong></p>
+        </section>
 
         <div className="details-container">
           {/* User Details */}
@@ -148,7 +149,6 @@ const ComplaintDetails = ({ complaintId }) => {
               <p><strong>Desired Resolution:</strong> {complaint.desiredResolution}</p>
               <p><strong>Additional Comments:</strong> {complaint.additionalComments}</p>
               <p><strong>Reviewer Note:</strong> {complaint.reviewerNote}</p>
-              <p><strong>Status:</strong> {complaint.status}</p>
             </div>
 
             {/* Attachments */}
@@ -188,12 +188,11 @@ const ComplaintDetails = ({ complaintId }) => {
           )}
 
           {/* PDF Export Button */}
-          {/* Added ref to this button for hiding it during PDF generation */}
           <button 
             ref={pdfButtonRef} 
             className="export-pdf-button" 
-            onClick={complaint.status === "Closed" ? generatePDF : null} // Only call generatePDF if status is Closed
-            disabled={complaint.status !== "Closed"} // Disable button if status is not Closed
+            onClick={complaint.status === "Closed" ? generatePDF : null}
+            disabled={complaint.status !== "Closed"}
           >
             Export as PDF
           </button>

@@ -205,3 +205,34 @@
   align-items: center;
   transition: all 0.3s ease; /* Smooth transition for hover effect */
 }
+
+.complaint-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background-color: #007bff;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  flex: 1;
+  margin: 0 10px; /* Space between cards */
+  transition: background-color 0.3s;
+}
+
+.stat-card h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.stat-card p {
+  margin: 5px 0 0 0;
+  font-size: 1rem;
+}
+
+.stat-card:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}

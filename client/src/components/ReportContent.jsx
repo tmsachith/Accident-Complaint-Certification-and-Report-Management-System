@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPersonFallingBurst, faClipboardList, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const ReportContent = () => {
   const [view, setView] = useState('accidents');
@@ -16,15 +18,23 @@ const ReportContent = () => {
           className={`button ${view === 'accidents' ? 'active' : ''}`}
           onClick={() => handleTabChange('accidents')}
         >
+          <FontAwesomeIcon icon={faPersonFallingBurst} style={{ marginRight: '8px' }} /> 
           Accidents
         </button>
         <button 
           className={`button ${view === 'complaints' ? 'active' : ''}`}
           onClick={() => handleTabChange('complaints')}
         >
+          <FontAwesomeIcon icon={faClipboardList} style={{ marginRight: '8px' }} /> 
           Complaints
         </button>
       </div>
+      {(!loaded.accidents && !loaded.complaints) && (
+        <div className="loading-container">
+          <FontAwesomeIcon icon={faSpinner} spin size="3x" />
+          <p>Report Generating...</p>
+        </div>
+      )}
       {loaded.accidents && (
         <iframe
           src="https://lookerstudio.google.com/embed/reporting/c87b71b9-2add-4af2-8a14-472a3a1d9a1c/page/N42GE"
