@@ -185,13 +185,20 @@ const AddComplaint = () => {
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
+      {/* Step Indicator */}
+      <div className="step-indicator">
+        <div className={`step ${step === 1 ? 'active-step' : ''}`}>1</div>
+        <div className={`step ${step === 2 ? 'active-step' : ''}`}>2</div>
+        <div className={`step ${step === 3 ? 'active-step' : ''}`}>3</div>
+      </div>
+  
+      {/* Form Steps */}
       {step === 1 && (
         <div className="form-step">
           <h2>Customer Details</h2>
           <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" required />
           <input type="email" name="contactInfo" value={formData.contactInfo} onChange={handleChange} placeholder="Email" required />
           <input type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Address" />
-          <button type="button" onClick={nextStep}>Next</button>
         </div>
       )}
       {step === 2 && (
@@ -225,8 +232,6 @@ const AddComplaint = () => {
               <option key={index} value={place}>{place}</option>
             ))}
           </select>
-          <button type="button" onClick={prevStep}>Back</button>
-          <button type="button" onClick={nextStep}>Next</button>
         </div>
       )}
       {step === 3 && (
@@ -251,12 +256,10 @@ const AddComplaint = () => {
               </div>
             ))}
           </div>
-          <button type="button" onClick={prevStep}>Back</button>
-          <button type="submit">Submit Complaint</button>
         </div>
       )}
-
-{statusPopup.show && (
+  
+      {statusPopup.show && (
         <div className="popup-container">
           <div className="popup-card">
             <p>{statusPopup.message}</p>
@@ -266,9 +269,13 @@ const AddComplaint = () => {
           </div>
         </div>
       )}
-
+  
+      <div className="form-navigation">
+        {step > 1 && <button type="button" className="back-button" onClick={prevStep}>Back</button>}
+        {step < 3 && <button type="button" className="next-button" onClick={nextStep}>Next</button>}
+        {step === 3 && <button type="submit" className="submit-button">Submit Complaint</button>}
+      </div>
     </form>
-    
   );
 };
 

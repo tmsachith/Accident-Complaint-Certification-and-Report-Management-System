@@ -74,24 +74,41 @@ const ComplaintDetails = ({ complaintId }) => {
     if (pdfButtonRef.current) {
       pdfButtonRef.current.style.display = 'none';
     }
-
-    htmlToImage.toPng(componentRef.current, { quality: 0.95 })
-      .then(function (dataUrl) {
+  
+    htmlToImage
+      .toPng(componentRef.current, { quality: 0.95 })
+      .then((dataUrl) => {
         const pdf = new jsPDF();
+  
+        // Add company header
+        pdf.setFontSize(16);
+        pdf.text('Bio Foods (Pvt) Ltd', 10, 10); // Replace 'Company Name' with your actual company name
+        pdf.setFontSize(12);
+        pdf.text('52, 1/D New Kandy Rd, Kaduwela', 10, 16);
+        pdf.text('Phone: 0117 487 100 | Email: info@biofoodslk.com', 10, 22);
+  
+        // Add the main content image
         const imgProps = pdf.getImageProperties(dataUrl);
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-        pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  
+        pdf.addImage(dataUrl, 'PNG', 0, 30, pdfWidth, pdfHeight);
+  
+        // Add a signature section
+        const bottomY = pdfHeight + 40; // Adjust '40' based on the content height
+        pdf.setFontSize(12);
+        pdf.text('Signature:', 10, bottomY);
+        pdf.line(30, bottomY, 100, bottomY); // Add a line for the signature
+  
         pdf.save(`${complaintId}.pdf`);
-
+  
         if (pdfButtonRef.current) {
           pdfButtonRef.current.style.display = 'block';
         }
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.error('Error generating PDF:', error);
-
+  
         if (pdfButtonRef.current) {
           pdfButtonRef.current.style.display = 'block';
         }
@@ -105,7 +122,7 @@ const ComplaintDetails = ({ complaintId }) => {
       {alert && <div className={`alert ${alert.type}`}>{alert.message}</div>}
 
       <div className="complaint-details" ref={componentRef}>
-        <h2>Complaint Details</h2>
+        {/* <h2>Complaint Details</h2> */}
 
         {/* Status Bar */}
         <section className="status-bar">
@@ -140,7 +157,7 @@ const ComplaintDetails = ({ complaintId }) => {
           {/* Complaint Details */}
           <section className="complaint-details-section section">
             <h3>Complaint Details</h3>
-            <div className="details-grid">
+            <div className="details-gride">
               <p><strong>Issue Title:</strong> {complaint.issueTitle}</p>
               <p><strong>Issue Description:</strong> {complaint.issueDescription}</p>
               <p><strong>Issue Date:</strong> {new Date(complaint.issueDate).toLocaleDateString()}</p>
@@ -148,12 +165,16 @@ const ComplaintDetails = ({ complaintId }) => {
               <p><strong>Health Effects:</strong> {complaint.healthEffects}</p>
               <p><strong>Desired Resolution:</strong> {complaint.desiredResolution}</p>
               <p><strong>Additional Comments:</strong> {complaint.additionalComments}</p>
-              <p><strong>Reviewer Note:</strong> {complaint.reviewerNote}</p>
+              
             </div>
 
+            
+          </section>
+          <section className="attachment section">
             {/* Attachments */}
+            <h3>Attachemnts</h3>
             <div className="attachments-container">
-              <strong>Attachments:</strong>
+              
               <div className="attachments">
                 {complaint.attachments.map((file, index) => (
                   <img
@@ -166,6 +187,16 @@ const ComplaintDetails = ({ complaintId }) => {
               </div>
             </div>
           </section>
+
+          {/* review note showing */}
+          {complaint.status === "Closed" && (
+          <section className="review-note-showing section">
+            <h3>Review</h3>
+            <div className="details-grid">
+            <p> {complaint.reviewerNote}</p>
+            </div>
+          </section>
+          )}
 
           {/* Review Note Section */}
           {complaint.status === "Pending" && (
