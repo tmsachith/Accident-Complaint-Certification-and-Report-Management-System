@@ -3,65 +3,80 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: relative; /* For positioning loading message */
 }
 
-.button-group {
+.control-group {
     display: flex; /* Use flexbox for horizontal arrangement */
-    margin-bottom: 20px;
+    align-items: center; /* Center items vertically */
+    margin-bottom: 20px; /* Space below the control group */
 }
 
-.button {
-    padding: 12px 24px;
+.report-dropdown {
+    flex: 1; /* Allow dropdown to take full width */
+    padding: 12px 15px; /* Increased padding for a larger touch area */
+    border-radius: 5px;
+    border: 1px solid #ced4da; /* Light gray border */
+    font-size: 16px;
+    margin-right: 10px; /* Space between dropdown and button */
+    cursor: pointer;
+    transition: border-color 0.3s ease; /* Smooth transition for border on focus */
+}
+
+.report-dropdown:focus {
+    border-color: #007bff; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.5); /* Custom focus ring */
+}
+
+.export-button {
+    padding: 12px 24px; /* Increased padding for a larger touch area */
     background-color: #007bff; /* Primary color */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Added transition for transform and box-shadow */
-    margin-right: 10px; /* Space between buttons */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    transition: background-color 0.3s, transform 0.2s; /* Added transition for transform */
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
 }
 
-.button:hover {
+.export-button:hover {
     background-color: #0056b3; /* Darker shade on hover */
-    transform: translateY(-2px); /* Lift effect on hover */
 }
 
-.button.active {
-    background-color: #0056b3; /* Keep active state color */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow for active button */
-}
-
-.button:focus {
+.export-button:focus {
     outline: none; /* Remove default outline */
     box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.5); /* Custom focus ring */
 }
 
-/* Loading container styles */
-.loading-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: calc(100vh - 160px); /* Adjust height based on your layout */
-    text-align: center; /* Center text horizontally */
+/* Style for the dropdown options */
+.report-dropdown option {
+    padding: 10px; /* Add padding to each option */
+    font-size: 16px; /* Match font size with the dropdown */
 }
 
-.loading-container p {
-    margin-top: 10px;
-    font-size: 18px;
-    color: lightgray; /* Light gray color for text */
+/* Custom styles for the dropdown menu */
+.report-dropdown {
+    -webkit-appearance: none; /* Remove default styling in WebKit browsers */
+    -moz-appearance: none; /* Remove default styling in Firefox */
+    appearance: none; /* Remove default styling in other browsers */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><polygon points="0,0 20,0 10,10" fill="%23333"/></svg>'); /* Custom arrow icon */
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Position the icon */
+    background-size: 12px; /* Size of the icon */
 }
 
-/* Rotate spinner icon */
-.loading-container .fa-spinner {
-    animation: spin 1s linear infinite; /* Spin animation for the loading icon */
+/* Hover effect for options (only works in certain browsers) */
+.report-dropdown:hover option {
+    background-color: #f1f1f1; /* Light gray background on hover */
 }
 
-/* Keyframes for spinning effect */
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+/* Style for when the dropdown is open */
+.report-dropdown:focus {
+    border-color: #007bff; /* Change border color on focus */
+}
+
+/* Additional styles for better visibility of options when focused */
+.report-dropdown option:focus {
+    background-color: #e9ecef; /* Light background when focused */
 }

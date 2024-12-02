@@ -15,7 +15,7 @@
 
 .complaint-details h2 {
   margin-bottom: 15px;
-  color: #333;
+  color: #000000;
   text-align: center;
 }
 
@@ -34,7 +34,7 @@
 
 .section h3 {
   margin-bottom: 10px;
-  color: #007bff;
+  color: #a16e00;
 }
 
 .details-grid {
@@ -44,19 +44,40 @@
 }
 
 .details-grid p {
-  margin: 5px 0;
+  margin: 10px 0;
   font-size: 16px;
-  color: #555;
+  color: #2d2d2d;
+}
+
+.details-gride {
+  /* display: grid; */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 10px;
+}
+
+.details-gride p {
+  margin: 20px 0;
+  font-size: 16px;
+  color: #2d2d2d;
+}
+
+.details-gride p strong {
+  display: block; /* Makes the strong text break onto a new line */
+}
+
+.attachments {
+  display: flex; /* Use flexbox to align items horizontally */
+  gap: 10px; /* Optional: Adds space between the images */
+  overflow-x: auto; /* Optional: Allows scrolling if there are many images */
 }
 
 .attachments img {
-  width: 100px;
-  height: auto;
-  margin: 5px;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  
+  max-width: 200px; /* Optional: Limits the size of the images */
+  height: auto; /* Maintain aspect ratio */
+  cursor: pointer; /* Adds pointer cursor on hover */
 }
+
 
 .review-note textarea {
   width: 100%;
