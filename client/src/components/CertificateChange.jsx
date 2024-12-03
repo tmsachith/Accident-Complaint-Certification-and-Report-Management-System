@@ -20,6 +20,9 @@ const CertificateChange = () => {
     comments: '',
     notifyStakeholders: false,
   });
+  const [approvedCount, setApprovedCount] = useState(0);
+const [rejectedCount, setRejectedCount] = useState(0);
+const [pendingCount, setPendingCount] = useState(0);
 
   useEffect(() => {
     const fetchChanges = async () => {
@@ -30,6 +33,15 @@ const CertificateChange = () => {
   
         const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setChanges(sortedData);
+  
+        // Calculate counts
+        const approved = sortedData.filter(change => change.status === 'Approved').length;
+        const rejected = sortedData.filter(change => change.status === 'Rejected').length;
+        const pending = sortedData.filter(change => change.status === 'Pending Review').length;
+  
+        setApprovedCount(approved);
+        setRejectedCount(rejected);
+        setPendingCount(pending);
       } catch (error) {
         console.error('Error fetching changes:', error);
       } finally {
@@ -97,6 +109,7 @@ const CertificateChange = () => {
 
   const renderChangeList = (changes) => {
     return changes.map((change, index) => (
+      
       <div
         className={`change-item ${change.status === 'Approved' ? 'approved' : 'line-manager'}`}
         key={index}
@@ -133,8 +146,28 @@ const CertificateChange = () => {
     : changes.filter((change) => change.status === 'Pending Review');
 
   return (
+    
     <div className="certificate-change">
-      
+      <div className="certificate-change">
+    <div className="summary-card">
+      <h2>Request Summary</h2>
+      <div className="summary-counts">
+        <div className="summary-item">
+          <strong>Approved:</strong> {approvedCount}
+        </div>
+        <div className="summary-item">
+          <strong>Rejected:</strong> {rejectedCount}
+        </div>
+        <div className="summary-item">
+          <strong>Pending:</strong> {pendingCount}
+        </div>
+      </div>
+    </div>
+
+    {/* Existing buttons and change list rendering... */}
+    
+  </div>
+
       <button className="add-request-button" onClick={handleAddChange}>
         Add Request
       </button>
